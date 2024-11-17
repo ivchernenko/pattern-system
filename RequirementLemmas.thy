@@ -12,12 +12,12 @@ named_theorems pastinv
 named_theorems einvs
 named_theorems elims
 
-lemma all_disj_rule[patternintro]: "always_imp s A A' \<and> always_imp s B B' \<Longrightarrow>
+lemma all_disj_rule[patternintro]: "toEnvP s \<Longrightarrow> always_imp s A A' \<and> always_imp s B B' \<Longrightarrow>
 always_imp s (\<lambda> s1. A s1 \<or> B s1) (\<lambda> s1. A' s1 \<or> B' s1)"
   apply(unfold always_imp_def)
   by auto
 
-lemma all_conj_rule[patternintro]: "always_imp s A A' \<and> always_imp s B B' \<Longrightarrow>
+lemma all_conj_rule[patternintro]: "toEnvP s \<Longrightarrow> always_imp s A A' \<and> always_imp s B B' \<Longrightarrow>
 always_imp s (\<lambda> s1. A s1 \<and> B s1) (\<lambda> s1. A' s1 \<and> B' s1)"
   apply(unfold always_imp_def)
   by auto
@@ -67,7 +67,7 @@ match conclusion in "?b \<longrightarrow> ?P" \<Rightarrow>
 match premises in i[thin]: _ (cut) \<Rightarrow>
 \<open>rule impI,erule impE,assumption,rotate_tac,
 match premises in b[thin]: _ (cut) \<Rightarrow>
-\<open>rotate_tac,rule pastinv,(assumption | simp),prove\<close>\<close>\<close> |
+\<open>rotate_tac,rule pastinv,assumption,prove\<close>\<close>\<close> |
 (*pattern*)
 rotate_tac -1;
 match premises in p[thin]: _ (cut) \<Rightarrow>
