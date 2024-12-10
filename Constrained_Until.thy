@@ -50,6 +50,7 @@ always_imp s (\<lambda> s1. constrained_until_inv s s1 t t1 A1' A2') (\<lambda> 
   done
 
 lemma constrained_until_einv2req[patternintro]: "
+toEnvP s \<Longrightarrow>
 always_imp s (A1' s) (A1 s) \<and>
 always_imp s (A2' s) (A2 s) \<and>
 t1 s \<le> t \<Longrightarrow>
@@ -68,18 +69,71 @@ always s s (\<lambda> r2 r1.  \<not> A1 r1 \<or> constrained_until r2 r1 t A2 A3
 definition P1_inv where "P1_inv s t t1 A1 A2' A3' \<equiv> 
 always_inv s (\<lambda> r2 r1.  \<not> A1 r1 \<or> constrained_until_inv r2 r1 t t1 A2' A3')"
 
-schematic_goal P1'inv_rule_gen: "
+lemma P1'inv_rule_gen: "
  P1_inv s t t1 A1 A2' A3' \<Longrightarrow> consecutive s s' \<Longrightarrow>
-B1 \<and> B2 \<Longrightarrow>
+(always_imp s (\<lambda>s1. \<not> A1 s1) (\<lambda>s1. \<not> A1 s1) \<and>  always_imp s (A2' s) (A2' s') \<and>
+    always_imp s (A3' s) (A3' s') \<and> (t1 s = STOP \<or> A3' s' s' \<and> t1 s \<le> t \<or> A2' s' s' \<and> t1 s < t1 s')) \<and>
+ (\<not> A1 s' \<or> A3' s' s' \<or> A2' s' s' \<and> STOP < t1 s') \<Longrightarrow>
  P1_inv s' t t1 A1 A2' A3'"
   unfolding P1_inv_def
-  apply(erule elims)
+  apply proveOuter
+  done
+ (* apply(erule elims)
    apply assumption
   apply(erule conjE)
   subgoal premises prems1
     apply(rule conjI)
      apply(insert prems1(1,2))[1]
+     apply(rule patternintro)
+      apply simp
+     apply(erule conjE)
+    subgoal premises prems2
+      apply(rule conjI)
+       apply(insert prems2(1,2))[1]
+       apply assumption
+      apply(insert prems2(1,3))
+      apply(rule patternintro)
+       apply assumption
+      apply assumption
+      done
+    apply(insert prems1(1,3))
+    apply(erule disjE)
+     apply(rule disjI1)
+     apply assumption
+    apply(rule disjI2)
+    apply(rule patternintro)
+     apply simp
+    apply assumption
+    done
+  done
+*)
 
+lemma P1'inv_einv2req_gen: "
+ P1_inv s t t1 A1 A2' A3' \<Longrightarrow> toEnvP s \<Longrightarrow>
+always_imp s (\<lambda>s1. \<not> A1 s1) (\<lambda>s1. \<not> A1 s1) \<and>  always_imp s (A2' s) (A2' s) \<and> always_imp s (A3' s) (A3' s) \<and> t1 s \<le> t
+  \<Longrightarrow>
+ P1 s t A1 A2' A3'"
+  unfolding P1_inv_def P1_def
+  apply proveOuter
+  done
+(*  apply(erule elims)
+   apply assumption
+  apply(rule patternintro)
+   apply assumption
+  apply(erule conjE)
+  subgoal premises prems1
+    apply(rule conjI)
+     apply(insert prems1(1,2))[1]
+     apply assumption
+    apply(insert prems1(1,3))
+    apply(rule patternintro)
+     apply assumption
+    apply assumption
+    done
+  done
+*)
+
+end
 
 
 
