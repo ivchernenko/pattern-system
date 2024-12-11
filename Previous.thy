@@ -113,11 +113,55 @@ lemma always2_rule_gen:
     done
   done
 *)
-        
+
+lemma always2_rule_gen_simp[elims]:
+"always2_inv s b A1 A2 A3 \<Longrightarrow> consecutive s s'
+ \<Longrightarrow> (( always_imp s (A3 s) (A3 s')) \<and> (b s \<or> \<not> A2 s' \<or> A3 s' s')) \<and> (b s' \<longrightarrow> \<not> A1 s')
+ \<Longrightarrow> always2_inv s' b A1 A2 A3"
+  by(simp add: always2_rule_gen)
+
+lemma always2_einv2req_gen: 
+"always2_inv s b A1 A2 A3' \<Longrightarrow> toEnvP s
+ \<Longrightarrow> True \<and> True \<and> always_imp s (A3' s) (A3 s)
+ \<Longrightarrow> always2 s A1 A2 A3"
+  unfolding always2_inv_def always2_def
+  apply(proveOuter add_rules: inv_req)
+  done
+ (* apply(erule conjE)
+  subgoal premises prems1
+    apply(insert prems1(1,2,3))
+    apply(rotate_tac -1)
+    apply(erule elims)
+     apply assumption
+    apply(rule patternintro)
+     apply assumption
+    apply(erule conjE)
+    subgoal premises prems2
+      apply(rule conjI)
+       apply(insert prems2(1,2))[1]
+       apply(rule inv_req)
+        apply assumption
+       apply(rule always_imp_refl)
+      apply(insert prems2(1,3))
+      apply(rule patternintro)
+       apply assumption
+      apply(erule conjE)
+      subgoal premises prems3
+        apply(rule conjI)
+         apply(insert prems3(1,2))[1]
+         apply(rule always_imp_refl)
+        apply(insert prems3(1,3))
+        apply assumption
+        done
+      done
+    done
+  done
+*)
+
+lemma always2_einv2req_gen_simp[elims]: 
+"always2_inv s b A1 A2 A3' \<Longrightarrow> toEnvP s
+ \<Longrightarrow> always_imp s (A3' s) (A3 s)
+ \<Longrightarrow> always2 s A1 A2 A3"
+  by(simp add: always2_einv2req_gen)
+
 end
-
-
-
-
-
-

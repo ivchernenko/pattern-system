@@ -3,21 +3,21 @@ theory Constrained_Always
 begin
 
 
-definition constrained_always where "constrained_always s1 s t A \<equiv>
-\<forall> s2. toEnvP s2 \<and> substate s1 s2 \<and> substate s2 s \<and> toEnvNum s1 s2 < t \<longrightarrow> A s2"
+definition constrained_always where "constrained_always s s1 t A \<equiv>
+\<forall> r1. toEnvP r1 \<and> s1 \<le> r1 \<and> r1 \<le> s \<and> toEnvNum s1 r1 < t \<longrightarrow> A s r1"
 
-definition constrained_always_inv where "constrained_always_inv s1 s t t1 A \<equiv>
-t = 0 \<or>toEnvNum s1 s \<ge> t1 \<and>
-(\<forall> s2. toEnvP s2 \<and> substate s1 s2 \<and> substate s2 s \<and> toEnvNum s1 s2 < t \<longrightarrow> A s2)"
+definition constrained_always_inv where "constrained_always_inv s s1 t t1 A \<equiv>
+t = 0
+ \<or> toEnvNum s1 s \<ge> t1 s \<and> (\<forall> r1. toEnvP r1 \<and> s1 \<le> r1 \<and> r1 \<le> s \<and> toEnvNum s1 r1 < t \<longrightarrow> A s r1)"
 
-lemma constrained_always_rule: "consecutive s0 s \<Longrightarrow>
-t = 0 \<or> (\<forall> s1. toEnvP s1 \<and> substate s1 s0 \<and> A s1 \<longrightarrow> A' s1) \<and>
-(t1 + 1 \<ge> t \<or> A' s) \<and> t1' \<le> t1 + 1 \<Longrightarrow>
-(\<forall> s1. toEnvP s1 \<and> substate s1 s0 \<and> constrained_always_inv s1 s0 t t1 A \<longrightarrow> constrained_always_inv s1 s t t1' A')"
-  apply(unfold constrained_always_inv_def)
+lemma constrained_always_rule: "consecutive s s' \<Longrightarrow>
+t = 0 \<or> always_imp s (A s) (A s') \<and>
+(t1 s + 1 \<ge> t \<or> A s' s') \<and> t1 s' \<le> t1 s + 1 \<Longrightarrow>
+always_imp s (\<lambda> s1. constrained_always_inv s s1 t t1 A) (\<lambda> s1. constrained_always_inv s' s1 t t1 A)"
+  unfolding constrained_always_inv_def always_imp_def
   apply(cases "t = 0")
    apply simp_all
-  by (smt (verit) One_nat_def Suc_eq_plus1 dual_order.trans leD not_less_eq_eq substate_noteq_imp_substate_of_pred toEnvNum3)
+
 
 lemma constrained_always_one_point: "t = 0 \<or> t1 = 0 \<and> ( A s) \<Longrightarrow> constrained_always_inv s s t t1 A"
   apply(unfold constrained_always_inv_def)

@@ -1,5 +1,5 @@
 theory Constrained_Until
-  imports Always
+  imports Previous
 begin
 
 definition constrained_until where "constrained_until s s1 t A1 A2 \<equiv>
@@ -133,14 +133,66 @@ always_imp s (\<lambda>s1. \<not> A1 s1) (\<lambda>s1. \<not> A1 s1) \<and>  alw
   done
 *)
 
+definition P1_2 where "P1_2 s t A11 A12 A2 A3 \<equiv> always2 s A11 A12 (\<lambda> r2 r1. constrained_until r2 r1 t A2 A3)"
+
+definition P1_2_inv where "P1_2_inv s t t1 b A11 A12 A2' A3' \<equiv>
+ always2_inv s b A11 A12 (\<lambda> r2 r1. constrained_until_inv r2 r1 t t1 A2' A3')"
+
+lemma P1_2_rule_gen:
+"P1_2_inv s t t1 b A11 A12 A2' A3' \<Longrightarrow> consecutive s s'
+\<Longrightarrow> ((always_imp s (A2' s) (A2' s') \<and>
+    always_imp s (A3' s) (A3' s') \<and> (t1 s = STOP \<or> A3' s' s' \<and> t1 s \<le> t \<or> A2' s' s' \<and> t1 s < t1 s'))
+ \<and> (b s \<or> \<not> A12 s' \<or> A3' s' s' \<or> A2' s' s' \<and> STOP < t1 s')) \<and> (b s' \<longrightarrow> \<not> A11 s')
+\<Longrightarrow> P1_2_inv s' t t1 b A11 A12 A2' A3'"
+  unfolding P1_2_inv_def
+  apply proveOuter
+  done
+ (* apply(erule elims)
+   apply assumption
+  apply(erule conjE)
+  subgoal premises prems1
+    apply(rule conjI)
+    apply(insert prems1(1,2))[1]
+     apply(erule conjE)
+    subgoal premises prems2
+      apply(rule conjI)
+       apply(insert prems2(1,2))[1]
+       apply(rule patternintro)
+        apply assumption
+       apply assumption
+      apply(insert prems2(1,3))
+      apply(erule disjE)
+       apply(rule disjI1)
+       apply assumption
+      apply(rule disjI2)
+      apply(erule disjE)
+       apply(rule disjI1)
+       apply assumption
+      apply(rule disjI2)
+      apply(rule patternintro)
+       apply simp
+      apply assumption
+      done
+    apply(insert prems1(1,3))
+    apply assumption
+    done
+  done
+*)
+
+lemma P1_2_einv2req_gen:
+"P1_2_inv s t t1 b A11 A12 A2' A3' \<Longrightarrow> toEnvP s
+\<Longrightarrow> always_imp s (A2' s) (A2 s) \<and> always_imp s (A3' s) (A3 s) \<and> t1 s \<le> t
+\<Longrightarrow> P1_2 s t A11 A12 A2 A3"
+  unfolding P1_2_inv_def P1_2_def
+  apply proveOuter
+  done
+(*  apply(erule elims)
+   apply assumption
+  apply(rule patternintro)
+   apply assumption
+  apply assumption
+  done
+*)
+
 end
-
-
-
-
-
-
-
-
-
  
