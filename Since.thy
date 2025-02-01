@@ -1,5 +1,5 @@
 theory Since
-  imports VCTheoryLemmas
+  imports RequirementLemmas
 begin
 
 definition dual_since where "dual_since t A1 A2 s s1 \<equiv>
@@ -11,52 +11,70 @@ definition since where "since t A1 A2 s s1 \<equiv>
 \<exists>  r1. toEnvP r1 \<and> r1 \<le> s1 \<and> toEnvNum r1 s1 \<ge> t \<and> A2 s r1 \<and>
 (\<forall> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s1  \<longrightarrow> A1 s r2)"
 
-lemma einv2req_neg: "   \<not> since s t A1 A2 \<longleftrightarrow> dual_since s t (\<lambda> s2. \<not>A1 s2) (\<lambda> s1. \<not>A2 s1)"
-  apply(unfold dual_since_def since_def)
-  apply auto
-  done
+definition dual_since_inv where "dual_since_inv (t::nat) t1 A1 A2 s \<equiv>  dual_since (t1 s) A1 A2 s s"
 
-definition dual_since_inv where "dual_since_inv s t b A1 A2 \<equiv> b \<longrightarrow> dual_since s t A1 A2"
-
-lemma dual_since_one_point: "consecutive s0 s \<Longrightarrow>
- dual_since_inv s0 t b A1 A2 \<and> (\<not>b' \<or> (t' > 0 \<or> A2 s) \<and> (A1 s\<or> b \<and> t < t'))  \<Longrightarrow>
- dual_since_inv s t' b' A1 A2"
-  apply(unfold dual_since_inv_def dual_since_def)
-  apply(erule conjE)
-  apply(erule disjE)
-   apply simp
-  apply(rule impI)
+lemma dual_since_one_point: "consecutive s s' \<Longrightarrow>
+(t1 s' > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> dual_since_inv t t1 A1' A2' s \<and> always_imp s (A1' s) (A1' s') \<and>
+always_imp s (A2' s) (A2' s') \<and>  t1 s < t1 s') \<Longrightarrow>
+dual_since_inv t t1 A1' A2' s' "
+  unfolding dual_since_inv_def dual_since_def always_imp_def less_state.simps less_eq_state.simps
   apply(rule allI)
-  subgoal for s1
-    apply(erule conjE)
-    apply(cases "s1=s")
+  subgoal for r1
+    apply(rule impI)
+    apply(cases "r1 = s'")
      apply auto[1]
-    apply(rotate_tac 4)
+    apply(erule conjE)
+    apply(rotate_tac -1)
     apply(erule disjE)
     using consecutive.simps substate_refl apply blast
+    apply(rotate_tac -1)
+    apply(erule conjE)
+    apply(erule allE[of _ r1])
+   apply(subgoal_tac "substate r1 s")
     apply(erule impE)
-     apply simp
+    apply(simp only: consecutive.simps)
+      apply(rule conjI)
+       apply simp
+      apply(rule conjI)
+       apply simp
+      apply(subgoal_tac "t1 s < toEnvNum r1 s'")
+    using toEnvNum3[of r1 s s'] apply simp
+    apply simp
+     apply (metis consecutive.simps substate_trans)
+    apply (metis consecutive.elims(2) substate_noteq_imp_substate_of_pred)
+    done
+  done
+
+lemma dual_since_L7: "consecutive s s' \<Longrightarrow>
+(t > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> dual_since_inv t t1 A1' A2' s \<and> always_imp s (A1' s) (A1' s') \<and>
+always_imp s (A2' s) (A2' s') \<and>  t1 s < t) \<Longrightarrow>
+dual_since t A1' A2' s' s' "
+  unfolding dual_since_inv_def dual_since_def always_imp_def less_state.simps less_eq_state.simps
+  apply(rule allI)
+  subgoal for r1
     apply(rule impI)
-    apply(erule allE[of _ s1])
-    apply(erule impE)
-     apply(subgoal_tac "substate s1 s0")
-    using toEnvNum3
+    apply(cases "r1 = s'")
     apply auto[1]
-     apply (meson consecutive.simps substate_noteq_imp_substate_of_pred)
-    using substate_trans
-    using consecutive.simps by blast
+    apply(erule conjE)
+    apply(rotate_tac -1)
+    apply(erule disjE)
+    using consecutive.simps substate_refl apply blast
+    apply(rotate_tac -1)
+    apply(erule conjE)
+    apply(erule allE[of _ r1])
+   apply(subgoal_tac "substate r1 s")
+    apply(erule impE)
+    apply(simp only: consecutive.simps)
+      apply(rule conjI)
+       apply simp
+      apply(rule conjI)
+       apply simp
+      apply(subgoal_tac "t1 s < toEnvNum r1 s'")
+    using toEnvNum3[of r1 s s'] apply simp
+    apply simp
+       apply (metis consecutive.simps substate_trans)
+    apply (metis consecutive.elims(2) substate_noteq_imp_substate_of_pred)
+    done
   done
-
-lemma dual_since_einv2req: "dual_since_inv s t b A1 A2 \<Longrightarrow> b = True \<and> t \<le> t' \<Longrightarrow> dual_since s t' A1 A2"
-  apply(unfold dual_since_inv_def dual_since_def)
-  apply auto
-  done
-
-end
-
-
-  
-
-
 
 end
