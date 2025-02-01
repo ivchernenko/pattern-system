@@ -3,17 +3,17 @@ theory Constrained_Always
 begin
 
 
-definition constrained_always where "constrained_always s s1 t A \<equiv>
+definition constrained_always where "constrained_always t A  s s1 \<equiv>
 \<forall> r1. toEnvP r1 \<and> s1 \<le> r1 \<and> r1 \<le> s \<and> toEnvNum s1 r1 < t \<longrightarrow> A s r1"
 
-definition constrained_always_inv where "constrained_always_inv s s1 t t1 A \<equiv>
+definition constrained_always_inv where "constrained_always_inv t t1 A  s s1 \<equiv>
 t = 0
  \<or> toEnvNum s1 s \<ge> t1 s \<and> (\<forall> r1. toEnvP r1 \<and> s1 \<le> r1 \<and> r1 \<le> s \<and> toEnvNum s1 r1 < t \<longrightarrow> A s r1)"
 
 lemma constrained_always_rule[patternintro]: "consecutive s s' \<Longrightarrow>
 t = 0 \<or> always_imp s (A s) (A s') \<and>
 (t1 s + 1 \<ge> t \<or> A s' s') \<and> t1 s' \<le> t1 s + 1 \<Longrightarrow>
-always_imp s (\<lambda> s1. constrained_always_inv s s1 t t1 A) (\<lambda> s1. constrained_always_inv s' s1 t t1 A)"
+always_imp s (\<lambda> s1. constrained_always_inv t t1 A  s s1) (\<lambda> s1. constrained_always_inv t t1 A  s' s1)"
   unfolding constrained_always_inv_def always_imp_def
   apply(cases "t = 0")
    apply simp_all
@@ -36,28 +36,29 @@ always_imp s (\<lambda> s1. constrained_always_inv s s1 t t1 A) (\<lambda> s1. c
     done
   done
 
-lemma constrained_always_one_point[patternintro]: "toEnvP s \<Longrightarrow> t = 0 \<or> t1 s = 0 \<and> (A s s) \<Longrightarrow> constrained_always_inv s s t t1 A"
+lemma constrained_always_one_point[patternintro]: "toEnvP s \<Longrightarrow> t = 0 \<or> t1 s = 0 \<and> (A s s) \<Longrightarrow>
+ constrained_always_inv  t t1 A s s"
   apply(unfold constrained_always_inv_def)
   using substate_antisym by auto 
 
 lemma constrained_always_einv2req[patternintro]: "
 always_imp s (A' s) (A s) \<Longrightarrow>
-always_imp s (\<lambda> s1. constrained_always_inv s s1 t t1 A') (\<lambda> s1. constrained_always s s1 t A)"
+always_imp s (\<lambda> s1. constrained_always_inv  t t1 A' s s1) (\<lambda> s1. constrained_always  t A s s1)"
   unfolding constrained_always_inv_def constrained_always_def always_imp_def
   by auto
 
 
-definition P2 where "P2 s t A1 A2 \<equiv>
-always s s (\<lambda> r2 r1. \<not> A1 r1 \<or> constrained_always r2 r1 t A2) "
+definition P2 where "P2 t A1 A2  s \<equiv>
+always  (\<lambda> r2 r1. \<not> A1 r1 \<or> constrained_always t A2  r2 r1) s s "
 
-definition P2_inv where "P2_inv s t t1 A1 A2' \<equiv>
-always_inv s (\<lambda> r2 r1. \<not> A1 r1 \<or> constrained_always_inv r2 r1 t t1 A2') "
+definition P2_inv where "P2_inv t t1 A1 A2' s \<equiv>
+always_inv (\<lambda> r2 r1. \<not> A1 r1 \<or> constrained_always_inv  t t1 A2' r2 r1)  s "
 
 lemma P2_rule_gen:
-"P2_inv s t t1 A1 A2' \<Longrightarrow> consecutive s s'
+"P2_inv t t1 A1 A2'  s \<Longrightarrow> consecutive s s'
 \<Longrightarrow> (True \<and> ( t = 0 \<or> always_imp s (A2' s) (A2' s') \<and> (t \<le> t1 s + 1 \<or> A2' s' s') \<and> t1 s' \<le> t1 s + 1))
  \<and>(\<not> A1 s' \<or> t = 0 \<or> t1 s' = 0 \<and> A2' s' s')
-\<Longrightarrow> P2_inv s' t t1 A1 A2'"
+\<Longrightarrow> P2_inv  t t1 A1 A2' s'"
   unfolding P2_inv_def
   apply proveOuter
   done
@@ -101,10 +102,5 @@ lemma P2_rule_gen:
         done
       done
 *)
-lemma P2_einv2req_gen:
-"P2_inv s t t1 A1 A2' \<Longrightarrow> toEnvP s
-\<Longrightarrow> B
-\<Longrightarrow> P2 s t A1 A2"
 
-
-
+end

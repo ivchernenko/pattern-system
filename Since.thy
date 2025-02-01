@@ -2,14 +2,14 @@ theory Since
   imports VCTheoryLemmas
 begin
 
-definition dual_since where "dual_since s t1 A1 A2 \<equiv> 
-\<forall> s1. substate s1 s \<and> toEnvP s1 \<and> toEnvNum s1 s \<ge> t1 \<longrightarrow> A2 s1 \<or>
-(\<exists> s2. toEnvP s2 \<and> substate s1 s2 \<and> substate s2 s \<and> s1 \<noteq> s2 \<and>  A1 s2)"
+definition dual_since where "dual_since t A1 A2 s s1 \<equiv>
+\<forall>  r1. toEnvP r1 \<and> r1 \<le> s1 \<and> toEnvNum r1 s1 \<ge> t \<longrightarrow> A2 s r1 \<or>
+(\<exists> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s1 \<and> A1 s r2)"
 
   
-definition since where "since s t A1 A2 \<equiv>
-\<exists>  s1. toEnvP s1 \<and> substate s1 s \<and> toEnvNum s1 s \<ge> t \<and> A2 s1 \<and>
-(\<forall> s2. toEnvP s2 \<and> substate s1 s2 \<and> substate s2 s \<and> s1 \<noteq> s2 \<longrightarrow> A1 s2)"
+definition since where "since t A1 A2 s s1 \<equiv>
+\<exists>  r1. toEnvP r1 \<and> r1 \<le> s1 \<and> toEnvNum r1 s1 \<ge> t \<and> A2 s r1 \<and>
+(\<forall> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s1  \<longrightarrow> A1 s r2)"
 
 lemma einv2req_neg: "   \<not> since s t A1 A2 \<longleftrightarrow> dual_since s t (\<lambda> s2. \<not>A1 s2) (\<lambda> s1. \<not>A2 s1)"
   apply(unfold dual_since_def since_def)

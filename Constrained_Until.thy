@@ -2,12 +2,12 @@ theory Constrained_Until
   imports Previous
 begin
 
-definition constrained_until where "constrained_until s s1 t A1 A2 \<equiv>
+definition constrained_until where "constrained_until t A1 A2  s s1 \<equiv>
 toEnvNum s1 s \<ge> t \<longrightarrow>
 (\<exists> r2. toEnvP r2 \<and> s1 \<le> r2 \<and> r2 \<le> s \<and> toEnvNum s1 r2 \<le> t \<and> A2 s r2 \<and>
 (\<forall> r1. toEnvP r1 \<and> s1 \<le> r1 \<and> r1 < r2 \<longrightarrow> A1 s r1))"
 
-definition constrained_until_inv where "constrained_until_inv s s1 t t1 A1' A2' \<equiv>
+definition constrained_until_inv where "constrained_until_inv  t t1 A1' A2' s s1 \<equiv>
 (\<exists> r2. toEnvP r2 \<and> s1 \<le> r2 \<and> r2 \<le> s \<and> toEnvNum s1 r2 \<le> t \<and> A2' s r2 \<and>
 (\<forall> r1. toEnvP r1 \<and> s1 \<le> r1 \<and> r1 < r2 \<longrightarrow> A1' s r1)) \<or>
 toEnvNum s1 s < t1 s \<and>
@@ -18,7 +18,7 @@ consecutive s s' \<Longrightarrow>
 always_imp s (A1' s) (A1' s') \<and>
 always_imp s (A2' s) (A2' s') \<and>
  (t1 s = 0 \<or> A2' s' s' \<and> t1 s \<le> t \<or> A1' s' s' \<and> t1 s < t1 s') \<Longrightarrow>
-always_imp s (\<lambda> s1. constrained_until_inv s s1 t t1 A1' A2') (\<lambda> s1. constrained_until_inv s' s1 t t1 A1' A2')"
+always_imp s (\<lambda> s1. constrained_until_inv t t1 A1' A2' s s1) (\<lambda> s1. constrained_until_inv t t1 A1' A2' s' s1)"
   apply(unfold constrained_until_inv_def always_imp_def)
     unfolding less_eq_state.simps less_state.simps
   apply(rule allI)
@@ -54,27 +54,27 @@ toEnvP s \<Longrightarrow>
 always_imp s (A1' s) (A1 s) \<and>
 always_imp s (A2' s) (A2 s) \<and>
 t1 s \<le> t \<Longrightarrow>
-always_imp s (\<lambda> s1. constrained_until_inv s s1 t t1 A1' A2') (\<lambda> s1. constrained_until s s1 t A1 A2)"
+always_imp s (\<lambda> s1. constrained_until_inv t t1 A1' A2' s s1) (\<lambda> s1. constrained_until  t A1 A2 s s1)"
   unfolding constrained_until_inv_def constrained_until_def always_imp_def less_eq_state.simps less_state.simps
   by (metis dual_order.trans substate_trans verit_comp_simplify1(3))
 
 lemma constrained_until_one_point[patternintro]: "
-toEnvP s \<Longrightarrow>A2' s s \<or> A1' s s \<and> t1 s > 0 \<Longrightarrow> constrained_until_inv s s t t1 A1' A2'"
+toEnvP s \<Longrightarrow>A2' s s \<or> A1' s s \<and> t1 s > 0 \<Longrightarrow> constrained_until_inv t t1 A1' A2' s s"
   unfolding constrained_until_inv_def always_imp_def
   by (metis bot_nat_0.extremum dual_order.refl leD order_le_imp_less_or_eq toEnvNum_id)
 
-definition P1 where "P1 s t A1 A2 A3 \<equiv> 
-always s s (\<lambda> r2 r1.  \<not> A1 r1 \<or> constrained_until r2 r1 t A2 A3)"
+definition P1 where "P1 t A1 A2 A3 s \<equiv> 
+always  (\<lambda> r2 r1.  \<not> A1 r1 \<or> constrained_until t A2 A3 r2 r1) s s"
 
-definition P1_inv where "P1_inv s t t1 A1 A2' A3' \<equiv> 
-always_inv s (\<lambda> r2 r1.  \<not> A1 r1 \<or> constrained_until_inv r2 r1 t t1 A2' A3')"
+definition P1_inv where "P1_inv t t1 A1 A2' A3' s \<equiv> 
+always_inv (\<lambda> r2 r1.  \<not> A1 r1 \<or> constrained_until_inv t t1 A2' A3' r2 r1) s"
 
 lemma P1'inv_rule_gen: "
- P1_inv s t t1 A1 A2' A3' \<Longrightarrow> consecutive s s' \<Longrightarrow>
+ P1_inv t t1 A1 A2' A3' s \<Longrightarrow> consecutive s s' \<Longrightarrow>
 (always_imp s (\<lambda>s1. \<not> A1 s1) (\<lambda>s1. \<not> A1 s1) \<and>  always_imp s (A2' s) (A2' s') \<and>
     always_imp s (A3' s) (A3' s') \<and> (t1 s = STOP \<or> A3' s' s' \<and> t1 s \<le> t \<or> A2' s' s' \<and> t1 s < t1 s')) \<and>
  (\<not> A1 s' \<or> A3' s' s' \<or> A2' s' s' \<and> STOP < t1 s') \<Longrightarrow>
- P1_inv s' t t1 A1 A2' A3'"
+ P1_inv t t1 A1 A2' A3'  s'"
   unfolding P1_inv_def
   apply proveOuter
   done
@@ -109,10 +109,10 @@ lemma P1'inv_rule_gen: "
 *)
 
 lemma P1'inv_einv2req_gen: "
- P1_inv s t t1 A1 A2' A3' \<Longrightarrow> toEnvP s \<Longrightarrow>
+ P1_inv t t1 A1 A2' A3' s \<Longrightarrow> toEnvP s \<Longrightarrow>
 always_imp s (\<lambda>s1. \<not> A1 s1) (\<lambda>s1. \<not> A1 s1) \<and>  always_imp s (A2' s) (A2' s) \<and> always_imp s (A3' s) (A3' s) \<and> t1 s \<le> t
   \<Longrightarrow>
- P1 s t A1 A2' A3'"
+ P1 t A1 A2' A3' s"
   unfolding P1_inv_def P1_def
   apply proveOuter
   done
@@ -133,66 +133,6 @@ always_imp s (\<lambda>s1. \<not> A1 s1) (\<lambda>s1. \<not> A1 s1) \<and>  alw
   done
 *)
 
-definition P1_2 where "P1_2 s t A11 A12 A2 A3 \<equiv> always2 s A11 A12 (\<lambda> r2 r1. constrained_until r2 r1 t A2 A3)"
-
-definition P1_2_inv where "P1_2_inv s t t1 b A11 A12 A2' A3' \<equiv>
- always2_inv s b A11 A12 (\<lambda> r2 r1. constrained_until_inv r2 r1 t t1 A2' A3')"
-
-lemma P1_2_rule_gen:
-"P1_2_inv s t t1 b A11 A12 A2' A3' \<Longrightarrow> consecutive s s'
-\<Longrightarrow> ((always_imp s (A2' s) (A2' s') \<and>
-    always_imp s (A3' s) (A3' s') \<and> (t1 s = STOP \<or> A3' s' s' \<and> t1 s \<le> t \<or> A2' s' s' \<and> t1 s < t1 s'))
- \<and> (b s \<or> \<not> A12 s' \<or> A3' s' s' \<or> A2' s' s' \<and> STOP < t1 s')) \<and> (b s' \<longrightarrow> \<not> A11 s')
-\<Longrightarrow> P1_2_inv s' t t1 b A11 A12 A2' A3'"
-  unfolding P1_2_inv_def
-  apply proveOuter
-  done
- (* apply(erule elims)
-   apply assumption
-  apply(erule conjE)
-  subgoal premises prems1
-    apply(rule conjI)
-    apply(insert prems1(1,2))[1]
-     apply(erule conjE)
-    subgoal premises prems2
-      apply(rule conjI)
-       apply(insert prems2(1,2))[1]
-       apply(rule patternintro)
-        apply assumption
-       apply assumption
-      apply(insert prems2(1,3))
-      apply(erule disjE)
-       apply(rule disjI1)
-       apply assumption
-      apply(rule disjI2)
-      apply(erule disjE)
-       apply(rule disjI1)
-       apply assumption
-      apply(rule disjI2)
-      apply(rule patternintro)
-       apply simp
-      apply assumption
-      done
-    apply(insert prems1(1,3))
-    apply assumption
-    done
-  done
-*)
-
-lemma P1_2_einv2req_gen:
-"P1_2_inv s t t1 b A11 A12 A2' A3' \<Longrightarrow> toEnvP s
-\<Longrightarrow> always_imp s (A2' s) (A2 s) \<and> always_imp s (A3' s) (A3 s) \<and> t1 s \<le> t
-\<Longrightarrow> P1_2 s t A11 A12 A2 A3"
-  unfolding P1_2_inv_def P1_2_def
-  apply proveOuter
-  done
-(*  apply(erule elims)
-   apply assumption
-  apply(rule patternintro)
-   apply assumption
-  apply assumption
-  done
-*)
 
 end
  

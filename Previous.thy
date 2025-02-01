@@ -2,53 +2,53 @@ theory Previous
   imports Always
 begin
 
-definition weak_previous where " weak_previous (s::state) s1 A \<equiv>
+definition weak_previous where " weak_previous A (s::state) s1 \<equiv>
 \<forall> r1. consecutive r1 s1 \<longrightarrow> A s r1"
 
-definition previous where "previous (s::state) s1 A \<equiv>
+definition previous where "previous A (s::state) s1 \<equiv>
 \<exists> r1. consecutive r1 s1 \<and> A s r1"
 
-definition previous_inv where "previous_inv (s::state) (A::state\<Rightarrow>state\<Rightarrow>bool) \<equiv> A s s"
+definition previous_inv where "previous_inv (A::state\<Rightarrow>state\<Rightarrow>bool) (s::state) \<equiv> A s s"
 
-definition always2 where  "always2 s A1 A2 A3 \<equiv> 
-always s s (\<lambda> r2 r1. weak_previous r2 r1 (\<lambda> r4 r3. \<not> A1 r3) \<or> \<not> A2 r1 \<or> A3 r2 r1)"
+definition always2 where  "always2 A1 A2 A3 s \<equiv> 
+always (\<lambda> r2 r1. weak_previous (\<lambda> r4 r3. \<not> A1 r3) r2 r1 \<or> \<not> A2 r1 \<or> A3 r2 r1) s s"
 
-definition always2_inv where  "always2_inv s b A1 A2 A3 \<equiv> 
-always_inv s (\<lambda> r2 r1. weak_previous r2 r1 (\<lambda> r4 r3. \<not> A1 r3) \<or> \<not> A2 r1 \<or> A3 r2 r1)
- \<and> (b s \<longrightarrow> previous_inv s (\<lambda> r2 r1. \<not> A1 r1))"
+definition always2_inv where  "always2_inv b A1 A2 A3 s \<equiv> 
+always_inv (\<lambda> r2 r1. weak_previous (\<lambda> r4 r3. \<not> A1 r3) r2 r1 \<or> \<not> A2 r1 \<or> A3 r2 r1) s
+ \<and> (b s \<longrightarrow> previous_inv (\<lambda> r2 r1. \<not> A1 r1) s )"
 
 lemma weak_previous_one_point[patternintro]: "consecutive s s'
- \<Longrightarrow> previous_inv s A \<and> always_imp s (A s) (A s')
- \<Longrightarrow> weak_previous s' s' A"
+ \<Longrightarrow> previous_inv A s \<and> always_imp s (A s) (A s')
+ \<Longrightarrow> weak_previous A s' s'"
   unfolding previous_inv_def weak_previous_def always_imp_def
   apply simp
   by (metis substate_refl toEnvNum_eq_imp_eq2)
 
-lemma previous_one_point[patternintro]: "consecutive s s' \<Longrightarrow> previous_inv s A \<and> always_imp s (A s) (A s')
-  \<Longrightarrow> previous s' s' A"
+lemma previous_one_point[patternintro]: "consecutive s s' \<Longrightarrow> previous_inv A s \<and> always_imp s (A s) (A s')
+  \<Longrightarrow> previous  A s' s'"
   unfolding previous_inv_def previous_def always_imp_def
   by auto
 
-lemma previous_rule[pastinv]: "consecutive s s' \<Longrightarrow> A s' s' \<Longrightarrow> previous_inv s' A"
+lemma previous_rule[pastinv]: "consecutive s s' \<Longrightarrow> A s' s' \<Longrightarrow> previous_inv A s'"
   unfolding previous_inv_def
   by auto
 
 lemma weak_previous_LS4[invsaving]: "consecutive s s' \<Longrightarrow> always_imp s (A s) (A s') 
-\<Longrightarrow> always_imp s (\<lambda> s1. weak_previous s s1 A) (\<lambda> s1. weak_previous s' s1 A)"
+\<Longrightarrow> always_imp s (\<lambda> s1. weak_previous A s s1) (\<lambda> s1. weak_previous A s' s1)"
   unfolding weak_previous_def always_imp_def
   apply simp
   by (meson substate_trans)
 
 lemma weak_previous_LS5[inv_req]: "toEnvP s \<Longrightarrow> always_imp s (A' s) (A s) 
-\<Longrightarrow> always_imp s (\<lambda> s1. weak_previous s s1 A') (\<lambda> s1. weak_previous s s1 A)"
+\<Longrightarrow> always_imp s (\<lambda> s1. weak_previous A' s s1) (\<lambda> s1. weak_previous A s s1)"
   unfolding weak_previous_def always_imp_def
   apply simp
   using substate_trans by blast
 
 lemma always2_rule_gen: 
-"always2_inv s b A1 A2 A3 \<Longrightarrow> consecutive s s'
+"always2_inv b A1 A2 A3 s \<Longrightarrow> consecutive s s'
  \<Longrightarrow> ((True \<and> True \<and>  always_imp s (A3 s) (A3 s')) \<and> (b s \<and> True \<or> \<not> A2 s' \<or> A3 s' s')) \<and> (b s' \<longrightarrow> \<not> A1 s')
- \<Longrightarrow> always2_inv s' b A1 A2 A3"
+ \<Longrightarrow> always2_inv b A1 A2 A3  s'"
   unfolding always2_inv_def
   apply(proveOuter add_rules: invsaving)
   done
@@ -115,15 +115,15 @@ lemma always2_rule_gen:
 *)
 
 lemma always2_rule_gen_simp[elims]:
-"always2_inv s b A1 A2 A3 \<Longrightarrow> consecutive s s'
- \<Longrightarrow> (( always_imp s (A3 s) (A3 s')) \<and> (b s \<or> \<not> A2 s' \<or> A3 s' s')) \<and> (b s' \<longrightarrow> \<not> A1 s')
- \<Longrightarrow> always2_inv s' b A1 A2 A3"
+"always2_inv b A1 A2 A3 s \<Longrightarrow> consecutive s s'
+ \<Longrightarrow> ((always_imp s (A3 s) (A3 s')) \<and> (b s \<or> \<not> A2 s' \<or> A3 s' s')) \<and> (b s' \<longrightarrow> \<not> A1 s')
+ \<Longrightarrow> always2_inv b A1 A2 A3  s'"
   by(simp add: always2_rule_gen)
 
 lemma always2_einv2req_gen: 
-"always2_inv s b A1 A2 A3' \<Longrightarrow> toEnvP s
+"always2_inv b A1 A2 A3' s \<Longrightarrow> toEnvP s
  \<Longrightarrow> True \<and> True \<and> always_imp s (A3' s) (A3 s)
- \<Longrightarrow> always2 s A1 A2 A3"
+ \<Longrightarrow> always2 A1 A2 A3 s"
   unfolding always2_inv_def always2_def
   apply(proveOuter add_rules: inv_req)
   done
@@ -159,9 +159,9 @@ lemma always2_einv2req_gen:
 *)
 
 lemma always2_einv2req_gen_simp[elims]: 
-"always2_inv s b A1 A2 A3' \<Longrightarrow> toEnvP s
+"always2_inv b A1 A2 A3' s \<Longrightarrow> toEnvP s
  \<Longrightarrow> always_imp s (A3' s) (A3 s)
- \<Longrightarrow> always2 s A1 A2 A3"
+ \<Longrightarrow> always2 A1 A2 A3 s"
   by(simp add: always2_einv2req_gen)
 
 end
