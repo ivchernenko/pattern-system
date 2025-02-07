@@ -13,7 +13,7 @@ definition since where "since t A1 A2 s s1 \<equiv>
 
 definition dual_since_inv where "dual_since_inv (t::nat) t1 A1 A2 s \<equiv>  dual_since (t1 s) A1 A2 s s"
 
-lemma dual_since_one_point: "consecutive s s' \<Longrightarrow>
+lemma dual_since_one_point[pastinv]: "consecutive s s' \<Longrightarrow>
 (t1 s' > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> dual_since_inv t t1 A1' A2' s \<and> always_imp s (A1' s) (A1' s') \<and>
 always_imp s (A2' s) (A2' s') \<and>  t1 s < t1 s') \<Longrightarrow>
 dual_since_inv t t1 A1' A2' s' "
@@ -45,7 +45,7 @@ dual_since_inv t t1 A1' A2' s' "
     done
   done
 
-lemma dual_since_L7: "consecutive s s' \<Longrightarrow>
+lemma dual_since_L7[patternintro]: "consecutive s s' \<Longrightarrow>
 (t > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> dual_since_inv t t1 A1' A2' s \<and> always_imp s (A1' s) (A1' s') \<and>
 always_imp s (A2' s) (A2' s') \<and>  t1 s < t) \<Longrightarrow>
 dual_since t A1' A2' s' s' "
@@ -76,5 +76,19 @@ dual_since t A1' A2' s' s' "
     apply (metis consecutive.elims(2) substate_noteq_imp_substate_of_pred)
     done
   done
+
+lemma dual_since_L4[invsaving]: "
+consecutive s s' \<Longrightarrow>
+always_imp s (A1' s) (A1' s') \<and> always_imp s (A2' s) (A2' s') \<Longrightarrow>
+always_imp s (dual_since t A1' A2' s) (dual_since t A1' A2' s')"
+  unfolding always_imp_def dual_since_def  less_state.simps less_eq_state.simps
+  by (metis substate_trans)
+  
+lemma dual_since_L5[inv_req]: "
+toEnvP s \<Longrightarrow>
+always_imp s (A1' s) (A1 s) \<and> always_imp s (A2' s) (A2 s) \<Longrightarrow>
+always_imp s (dual_since t A1' A2' s) (dual_since t A1 A2 s)" 
+  unfolding always_imp_def dual_since_def  less_state.simps less_eq_state.simps
+  by (metis substate_trans)
 
 end

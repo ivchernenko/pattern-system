@@ -2,7 +2,6 @@ theory Constrained_Always
   imports Previous
 begin
 
-
 definition constrained_always where "constrained_always t A  s s1 \<equiv>
 \<forall> r1. toEnvP r1 \<and> s1 \<le> r1 \<and> r1 \<le> s \<and> toEnvNum s1 r1 < t \<longrightarrow> A s r1"
 
@@ -49,7 +48,7 @@ always_imp s (\<lambda> s1. constrained_always_inv  t t1 A' s s1) (\<lambda> s1.
 
 
 definition P2 where "P2 t A1 A2  s \<equiv>
-always  (\<lambda> r2 r1. \<not> A1 r1 \<or> constrained_always t A2  r2 r1) s s "
+always  (\<lambda> r2 r1. \<not> A1 r1 \<or> constrained_always t A2  r2 r1) s "
 
 definition P2_inv where "P2_inv t t1 A1 A2' s \<equiv>
 always_inv (\<lambda> r2 r1. \<not> A1 r1 \<or> constrained_always_inv  t t1 A2' r2 r1)  s "

@@ -64,7 +64,7 @@ toEnvP s \<Longrightarrow>A2' s s \<or> A1' s s \<and> t1 s > 0 \<Longrightarrow
   by (metis bot_nat_0.extremum dual_order.refl leD order_le_imp_less_or_eq toEnvNum_id)
 
 definition P1 where "P1 t A1 A2 A3 s \<equiv> 
-always  (\<lambda> r2 r1.  \<not> A1 r1 \<or> constrained_until t A2 A3 r2 r1) s s"
+always  (\<lambda> r2 r1.  \<not> A1 r1 \<or> constrained_until t A2 A3 r2 r1) s"
 
 definition P1_inv where "P1_inv t t1 A1 A2' A3' s \<equiv> 
 always_inv (\<lambda> r2 r1.  \<not> A1 r1 \<or> constrained_until_inv t t1 A2' A3' r2 r1) s"
@@ -132,7 +132,6 @@ always_imp s (\<lambda>s1. \<not> A1 s1) (\<lambda>s1. \<not> A1 s1) \<and>  alw
     done
   done
 *)
-
 
 end
  

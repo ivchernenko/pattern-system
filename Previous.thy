@@ -11,7 +11,7 @@ definition previous where "previous A (s::state) s1 \<equiv>
 definition previous_inv where "previous_inv (A::state\<Rightarrow>state\<Rightarrow>bool) (s::state) \<equiv> A s s"
 
 definition always2 where  "always2 A1 A2 A3 s \<equiv> 
-always (\<lambda> r2 r1. weak_previous (\<lambda> r4 r3. \<not> A1 r3) r2 r1 \<or> \<not> A2 r1 \<or> A3 r2 r1) s s"
+always (\<lambda> r2 r1. weak_previous (\<lambda> r4 r3. \<not> A1 r3) r2 r1 \<or> \<not> A2 r1 \<or> A3 r2 r1) s"
 
 definition always2_inv where  "always2_inv b A1 A2 A3 s \<equiv> 
 always_inv (\<lambda> r2 r1. weak_previous (\<lambda> r4 r3. \<not> A1 r3) r2 r1 \<or> \<not> A2 r1 \<or> A3 r2 r1) s
