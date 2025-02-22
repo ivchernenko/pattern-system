@@ -26,6 +26,7 @@ lemma weak_until_one_point[patternintro]: "toEnvP s \<Longrightarrow> A2 s s \<o
   using substate_antisym substate_refl by blast
 
 lemma weak_until_einv2req[patternintro]: "
+toEnvP s \<Longrightarrow>
 always_imp s (A1' s) (A1 s) \<and>
 always_imp s (A2' s) (A2 s) \<Longrightarrow>
 always_imp s (weak_until_inv w A1' A2' s) (weak_until A1 A2 s)"

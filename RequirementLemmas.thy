@@ -49,7 +49,7 @@ match conclusion in "always_imp ?s ?A ?A" \<Rightarrow> \<open>rule always_imp_r
 (*pattern*)
 rule patternintro add_rules,(assumption | simp),prove |
 (*past extra invariant pattern*)
-rotate_tac;match premises in p[thin]: b (cut) for b \<Rightarrow> \<open>match einvs in i: "b \<longrightarrow> ?P" \<Rightarrow> \<open>fact mp[OF i p]\<close>\<close>
+rotate_tac;match premises in p[thin]: b (cut) for b \<Rightarrow> \<open>match einvs in i: "b \<longrightarrow> ?P" \<Rightarrow> \<open>rule mp[OF i p]\<close>\<close>
 
 method proveOuter declares add_rules einvs =
 (*conjunction*)

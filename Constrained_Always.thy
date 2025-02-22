@@ -41,6 +41,7 @@ lemma constrained_always_one_point[patternintro]: "toEnvP s \<Longrightarrow> t 
   using substate_antisym by auto 
 
 lemma constrained_always_einv2req[patternintro]: "
+toEnvP s \<Longrightarrow>
 always_imp s (A' s) (A s) \<Longrightarrow>
 always_imp s (\<lambda> s1. constrained_always_inv  t t1 A' s s1) (\<lambda> s1. constrained_always  t A s s1)"
   unfolding constrained_always_inv_def constrained_always_def always_imp_def

@@ -45,6 +45,18 @@ lemma weak_previous_LS5[inv_req]: "toEnvP s \<Longrightarrow> always_imp s (A' s
   apply simp
   using substate_trans by blast
 
+lemma previous_LS4[invsaving]: "consecutive s s' \<Longrightarrow> always_imp s (A s) (A s') 
+\<Longrightarrow> always_imp s (\<lambda> s1. previous A s s1) (\<lambda> s1. previous A s' s1)"
+  unfolding previous_def always_imp_def
+  apply simp
+  by (meson substate_trans)
+
+lemma previous_LS5[inv_req]: "toEnvP s \<Longrightarrow> always_imp s (A' s) (A s) 
+\<Longrightarrow> always_imp s (\<lambda> s1. previous A' s s1) (\<lambda> s1. previous A s s1)"
+  unfolding previous_def always_imp_def
+  apply simp
+  using substate_trans by blast
+
 lemma always2_rule_gen: 
 "always2_inv b A1 A2 A3 s \<Longrightarrow> consecutive s s'
  \<Longrightarrow> ((True \<and> True \<and>  always_imp s (A3 s) (A3 s')) \<and> (b s \<and> True \<or> \<not> A2 s' \<or> A3 s' s')) \<and> (b s' \<longrightarrow> \<not> A1 s')
