@@ -11,14 +11,15 @@ definition since where "since t A1 A2 s s1 \<equiv>
 \<exists>  r1. toEnvP r1 \<and> r1 \<le> s1 \<and> toEnvNum r1 s1 \<ge> t \<and> A2 s r1 \<and>
 (\<forall> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s1  \<longrightarrow> A1 s r2)"
 
-definition dual_since_inv where "dual_since_inv (t::nat) t1 A1 A2 s \<equiv>  dual_since (t1 s) A1 A2 s s"
+definition dual_since_inv where "dual_since_inv (t::nat) b t1 A1 A2 s \<equiv> b s \<longrightarrow> dual_since (t1 s) A1 A2 s s"
 
-lemma dual_since_one_point[pastinv]: "consecutive s s' \<Longrightarrow>
-(t1 s' > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> dual_since_inv t t1 A1' A2' s \<and> always_imp s (A1' s) (A1' s') \<and>
+lemma dual_since_one_point[pastinv]: "dual_since_inv t b t1 A1' A2' s \<Longrightarrow> consecutive s s' \<Longrightarrow>
+(t1 s' > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> b s \<and> always_imp s (A1' s) (A1' s') \<and>
 always_imp s (A2' s) (A2' s') \<and>  t1 s < t1 s') \<Longrightarrow>
-dual_since_inv t t1 A1' A2' s' "
+dual_since_inv t b  t1 A1' A2' s' "
   unfolding dual_since_inv_def dual_since_def always_imp_def less_state.simps less_eq_state.simps
-  apply(rule allI)
+  apply(rule impI)
+apply(rule allI)
   subgoal for r1
     apply(rule impI)
     apply(cases "r1 = s'")
@@ -28,7 +29,8 @@ dual_since_inv t t1 A1' A2' s' "
     apply(erule disjE)
     using consecutive.simps substate_refl apply blast
     apply(rotate_tac -1)
-    apply(erule conjE)
+    apply(erule impE)
+     apply simp
     apply(erule allE[of _ r1])
    apply(subgoal_tac "substate r1 s")
     apply(erule impE)
@@ -45,8 +47,8 @@ dual_since_inv t t1 A1' A2' s' "
     done
   done
 
-lemma dual_since_L7[patternintro]: "consecutive s s' \<Longrightarrow>
-(t > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> dual_since_inv t t1 A1' A2' s \<and> always_imp s (A1' s) (A1' s') \<and>
+lemma dual_since_L7[patternintro]: " dual_since_inv t b t1 A1' A2' s \<Longrightarrow> consecutive s s' \<Longrightarrow>
+(t > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> b s \<and> always_imp s (A1' s) (A1' s') \<and>
 always_imp s (A2' s) (A2' s') \<and>  t1 s < t) \<Longrightarrow>
 dual_since t A1' A2' s' s' "
   unfolding dual_since_inv_def dual_since_def always_imp_def less_state.simps less_eq_state.simps
@@ -60,7 +62,8 @@ dual_since t A1' A2' s' s' "
     apply(erule disjE)
     using consecutive.simps substate_refl apply blast
     apply(rotate_tac -1)
-    apply(erule conjE)
+    apply(erule impE)
+     apply simp
     apply(erule allE[of _ r1])
    apply(subgoal_tac "substate r1 s")
     apply(erule impE)
