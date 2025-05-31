@@ -1,4 +1,4 @@
-theory Derived_Patterns imports Patterns
+theory Derived_Patterns imports Basic_Patterns
  begin
 definition always2 where "always2 A11 A12 A2 s \<equiv> (always (\<lambda> r2 r1 . ((weak_previous (\<lambda> r4 r3 . (\<not> (A11 r3))) r2 r1) \<or> ((\<not> (A12 r1)) \<or> (A2 r2 r1)))) s)"
 

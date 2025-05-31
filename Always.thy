@@ -18,4 +18,23 @@ lemma always_einv2req[elims]: "always_inv A' s  \<Longrightarrow> toEnvP s \<Lon
   apply(unfold always_def always_inv_def always_imp_def)
   by simp
 
+definition always_part where "always_part A s \<equiv> always (\<lambda> s s1. A s1) s"
+definition always_inv_part where "always_inv_part A s \<equiv> always_inv (\<lambda> s s1. A s1) s"
+
+lemma always_inv_saving: "always_inv_part A s \<Longrightarrow> consecutive s s' \<Longrightarrow>   A s' \<Longrightarrow>
+ always_inv_part A s'"
+  unfolding always_inv_part_def
+  apply(simp add: always_rule always_imp_refl)
+  done
+
+lemma always_einv_imp_req: "always_inv_part A s  \<Longrightarrow> toEnvP s \<Longrightarrow> True \<Longrightarrow> always_part A s"
+  unfolding always_inv_part_def always_part_def
+  apply(simp add: always_einv2req always_imp_refl)
+  done
+
+lemmas always_used_patterns = always_def
+lemmas always_inv_used_patterns = always_inv_def
+lemmas always_part_used_patterns = always_part_def  always_def
+lemmas always_inv_part_used_patterns = always_inv_part_def always_inv_def
+
 end

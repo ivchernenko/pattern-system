@@ -1,4 +1,3 @@
-session Patterns = HOL +
-  options [document=true]
+session VCProving = HOL +
   sessions "HOL-Eisbach"
-  theories RequirementLemmas
+  theories  Basic_Patterns Derived_Patterns
