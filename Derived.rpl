@@ -1,0 +1,82 @@
+import "Basic_Patterns.rpl";
+
+derivedreq pattern always2(simple formulas: A11, A12 formulas: A2) = 
+always(formulas: lambda r2 r1. weak_previous(formulas: lambda r4 r3. ~A11(r3) final: r2 current: r1) \/ ~A12(r1) \/ A2(r2, r1));
+
+derivedreq pattern P1_1(const : t simple formulas : A1 formulas : A2, A3) = always(formulas : lambda r2 r1. 
+	~A1(r1) \/ constrained_until(const : t formulas : A2, A3 final : r2 current : r1)
+);
+
+derivedreq pattern P1_2(const : t simple formulas : A11, A12 formulas : A2, A3) = always(formulas : lambda r2 r1. 
+	weak_previous(formulas: lambda r4 r3. ~ A11(r3) final: r2 current: r1) \/ ~ A12(r1) \/ constrained_until(const : t formulas : A2, A3 final : r2 current : r1)
+);
+
+derivedreq pattern P2_1(const : t simple formulas : A1 formulas : A2) = always(formulas : lambda r2 r1. 
+	~A1(r1) \/ constrained_always(const : t formulas : A2 final : r2 current : r1)
+);
+
+derivedreq pattern P2_2(const : t simple formulas : A11, A12 formulas : A2) = always(formulas : lambda r2 r1. 
+	weak_previous(formulas: lambda r4 r3. ~ A11(r3) final: r2 current: r1) \/ ~ A12(r1) \/
+	 constrained_always(const : t formulas : A2 final : r2 current : r1)
+);
+
+derivedreq pattern P3_1(simple formulas : A1 formulas : A2, A3) = always(formulas : lambda r2 r1. 
+	~A1(r1) \/weak_until(formulas : A2, A3 final : r2 current : r1)
+);
+
+derivedreq pattern P3_2(simple formulas : A11, A12 formulas : A2, A3) = always(formulas : lambda r2 r1. 
+	weak_previous(formulas: lambda r4 r3. ~ A11(r3) final: r2 current: r1) \/ ~ A12(r1) \/ 
+	weak_until(formulas : A2, A3 final : r2 current : r1)
+);
+
+derivedreq pattern P3_3(simple formulas : A1 formulas : A2, A3) = always(formulas : lambda r2 r1. 
+	weak_previous(formulas: lambda r4 r3. ~A1(r3) final: r2 current: r1) \/ weak_until(formulas : A2, A3 final : r2 current : r1)
+);
+
+derivedreq pattern P3_4(simple formulas : A11, A12 formulas : A2, A3) = always(formulas : lambda r2 r1. 
+	weak_previous(
+		formulas: lambda r4 r3. weak_previous(formulas: lambda r6 r5. ~A11(r5) final: r4 current: r3) \/ ~A12(r3) final: r2 current: r1
+	) \/ weak_until(formulas : A2, A3 final : r2 current : r1)
+);
+
+derivedreq pattern P4_1(const: t simple formulas : A1 formulas : A2, A3) = always(formulas : lambda r2 r1. 
+	~A1(r1) \/ constrained_weak_until(const: t formulas : A2, A3 final : r2 current : r1)
+);
+
+derivedreq pattern P4_2(const: t simple formulas : A11, A12 formulas : A2, A3) = always(formulas : lambda r2 r1. 
+	weak_previous(formulas: lambda r4 r3. ~ A11(r3) final: r2 current: r1) \/ ~ A12(r1) \/ 
+	constrained_weak_until(const : t formulas : A2, A3 final : r2 current : r1)
+);
+
+derivedreq pattern P4_3(const: t simple formulas : A11, A12 formulas : A2, A31, A32) = always(formulas : lambda r2 r1. 
+	weak_previous(formulas: lambda r4 r3. ~ A11(r3) final: r2 current: r1) \/ ~ A12(r1) \/ 
+	constrained_weak_until(
+		const : t 
+		formulas : A2, lambda r4 r3. previous(formulas: A31 final: r4 current: r3) /\ A32(r4, r3) final : r2 current : r1
+	)
+);
+
+derivedreq pattern P6_1(const: t simple formulas : A1, A2, A3 formulas : A4) = always(formulas : lambda r2 r1. 
+	weak_previous(
+		formulas: lambda r4 r3. dual_since(const: t formulas: lambda r6 r5. ~A2(r5), lambda r6 r5. ~A1(r5) final: r4 current: r3) 
+		final: r2 current: r1
+	) \/ ~A3(r1)\/ A4(r2, r1)
+);
+
+derivedreq pattern P6_2(const: t simple formulas : A1, A2, A3 formulas : A4, A5) = always(formulas : lambda r2 r1. 
+	weak_previous(
+		formulas: lambda r4 r3. dual_since(const: t formulas: lambda r6 r5. ~A2(r5), lambda r6 r5. ~A1(r5) final: r4 current: r3) 
+		final: r2 current: r1
+	) \/ ~A3(r1)\/ 
+	weak_until(formulas : A4, A5 final : r2 current : r1)
+);
+
+derivedreq pattern P_constrained_always_after_max_delay(const: t1, t2 simple formulas: A11, A12, A2 formulas: A3)
+= P1_2(const: t1 simple formulas: A11, A12 formulas: lambda r2 r1. ~A2(r1), 
+	lambda r2 r1. A2(r1) /\ constrained_always(const: t2 formulas: A3 final: r2 current: r1));
+	
+derivedreq pattern P5(simple formulas: A11, A12, A2 formulas: A31, A32, A4)
+= P3_4(simple formulas: A11, A12 formulas: lambda r2 r1. ~A2(r1), lambda r2 r1. A2(r1) /\ A4(r2, r1) \/
+	previous(formulas: A31 final: r2 current: r1) /\ A32(r2, r1)
+);
+	

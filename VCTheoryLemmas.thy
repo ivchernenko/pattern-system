@@ -43,6 +43,10 @@ lemma external_ltime[simp]: "toEnvP s \<Longrightarrow> ltime s p > 0"
   apply(cases s)
   by auto
 
+lemma external_ltime2[simp]: "toEnvP s \<Longrightarrow> ltime s p \<ge> Suc 0"
+  apply(cases s)
+  by auto
+
 lemma toEnvNum_eq_imp_eq2: "substate s1 s3 \<and> substate s2 s3 \<and> toEnvP s1 \<and> toEnvP s2 \<and> toEnvNum s1 s3 = toEnvNum s2 s3 \<Longrightarrow>
 s1=s2"
   using substate_linear toEnvNum3 substate_toEnvNum_id
