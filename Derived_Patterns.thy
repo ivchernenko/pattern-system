@@ -142,9 +142,9 @@ done
 
 
 
-lemmas always2_used_patterns = always2_def always_def weak_previous_def 
+lemmas always2_used_patterns = always2_def always_used_patterns weak_previous_def 
 
-lemmas always2_inv_used_patterns = always2_inv_def always_inv_def weak_previous_def previous_inv_def 
+lemmas always2_inv_used_patterns = always2_inv_def always_inv_used_patterns weak_previous_def previous_inv_def 
 
 lemmas always2_inv_part_used_patterns = always2_inv_part_def always2_inv_used_patterns
 
@@ -300,9 +300,9 @@ done
 
 
 
-lemmas P1_1_used_patterns = P1_1_def always_def constrained_until_def 
+lemmas P1_1_used_patterns = P1_1_def always_used_patterns constrained_until_def 
 
-lemmas P1_1_inv_used_patterns = P1_1_inv_def always_inv_def constrained_until_inv_def 
+lemmas P1_1_inv_used_patterns = P1_1_inv_def always_inv_used_patterns constrained_until_inv_def 
 
 lemmas P1_1_inv_part_used_patterns = P1_1_inv_part_def P1_1_inv_used_patterns
 
@@ -516,9 +516,9 @@ done
 
 
 
-lemmas P1_2_used_patterns = P1_2_def always_def weak_previous_def constrained_until_def 
+lemmas P1_2_used_patterns = P1_2_def always_used_patterns weak_previous_def constrained_until_def 
 
-lemmas P1_2_inv_used_patterns = P1_2_inv_def always_inv_def weak_previous_def constrained_until_inv_def previous_inv_def 
+lemmas P1_2_inv_used_patterns = P1_2_inv_def always_inv_used_patterns weak_previous_def constrained_until_inv_def previous_inv_def 
 
 lemmas P1_2_inv_part_used_patterns = P1_2_inv_part_def P1_2_inv_used_patterns
 
@@ -646,9 +646,9 @@ done
 
 
 
-lemmas P2_1_used_patterns = P2_1_def always_def constrained_always_def 
+lemmas P2_1_used_patterns = P2_1_def always_used_patterns constrained_always_def 
 
-lemmas P2_1_inv_used_patterns = P2_1_inv_def always_inv_def constrained_always_inv_def 
+lemmas P2_1_inv_used_patterns = P2_1_inv_def always_inv_used_patterns constrained_always_inv_def 
 
 lemmas P2_1_inv_part_used_patterns = P2_1_inv_part_def P2_1_inv_used_patterns
 
@@ -834,9 +834,9 @@ done
 
 
 
-lemmas P2_2_used_patterns = P2_2_def always_def weak_previous_def constrained_always_def 
+lemmas P2_2_used_patterns = P2_2_def always_used_patterns weak_previous_def constrained_always_def 
 
-lemmas P2_2_inv_used_patterns = P2_2_inv_def always_inv_def weak_previous_def constrained_always_inv_def previous_inv_def 
+lemmas P2_2_inv_used_patterns = P2_2_inv_def always_inv_used_patterns weak_previous_def constrained_always_inv_def previous_inv_def 
 
 lemmas P2_2_inv_part_used_patterns = P2_2_inv_part_def P2_2_inv_used_patterns
 
@@ -978,9 +978,9 @@ done
 
 
 
-lemmas P3_1_used_patterns = P3_1_def always_def weak_until_def 
+lemmas P3_1_used_patterns = P3_1_def always_used_patterns weak_until_def 
 
-lemmas P3_1_inv_used_patterns = P3_1_inv_def always_inv_def weak_until_inv_def 
+lemmas P3_1_inv_used_patterns = P3_1_inv_def always_inv_used_patterns weak_until_inv_def 
 
 lemmas P3_1_inv_part_used_patterns = P3_1_inv_part_def P3_1_inv_used_patterns
 
@@ -1180,9 +1180,9 @@ done
 
 
 
-lemmas P3_2_used_patterns = P3_2_def always_def weak_previous_def weak_until_def 
+lemmas P3_2_used_patterns = P3_2_def always_used_patterns weak_previous_def weak_until_def 
 
-lemmas P3_2_inv_used_patterns = P3_2_inv_def always_inv_def weak_previous_def weak_until_inv_def previous_inv_def 
+lemmas P3_2_inv_used_patterns = P3_2_inv_def always_inv_used_patterns weak_previous_def weak_until_inv_def previous_inv_def 
 
 lemmas P3_2_inv_part_used_patterns = P3_2_inv_part_def P3_2_inv_used_patterns
 
@@ -1360,9 +1360,9 @@ done
 
 
 
-lemmas P3_3_used_patterns = P3_3_def always_def weak_previous_def weak_until_def 
+lemmas P3_3_used_patterns = P3_3_def always_used_patterns weak_previous_def weak_until_def 
 
-lemmas P3_3_inv_used_patterns = P3_3_inv_def always_inv_def weak_previous_def weak_until_inv_def previous_inv_def 
+lemmas P3_3_inv_used_patterns = P3_3_inv_def always_inv_used_patterns weak_previous_def weak_until_inv_def previous_inv_def 
 
 lemmas P3_3_inv_part_used_patterns = P3_3_inv_part_def P3_3_inv_used_patterns
 
@@ -1603,9 +1603,9 @@ done
 
 
 
-lemmas P3_4_used_patterns = P3_4_def always_def weak_previous_def weak_previous_def weak_until_def 
+lemmas P3_4_used_patterns = P3_4_def always_used_patterns weak_previous_def weak_previous_def weak_until_def 
 
-lemmas P3_4_inv_used_patterns = P3_4_inv_def always_inv_def weak_previous_def weak_previous_def weak_until_inv_def previous_inv_def weak_previous_def previous_inv_def 
+lemmas P3_4_inv_used_patterns = P3_4_inv_def always_inv_used_patterns weak_previous_def weak_previous_def weak_until_inv_def previous_inv_def weak_previous_def previous_inv_def 
 
 lemmas P3_4_inv_part_used_patterns = P3_4_inv_part_def P3_4_inv_used_patterns
 
@@ -1761,9 +1761,9 @@ done
 
 
 
-lemmas P4_1_used_patterns = P4_1_def always_def constrained_weak_until_def 
+lemmas P4_1_used_patterns = P4_1_def always_used_patterns constrained_weak_until_def 
 
-lemmas P4_1_inv_used_patterns = P4_1_inv_def always_inv_def constrained_weak_until_inv_def 
+lemmas P4_1_inv_used_patterns = P4_1_inv_def always_inv_used_patterns constrained_weak_until_inv_def 
 
 lemmas P4_1_inv_part_used_patterns = P4_1_inv_part_def P4_1_inv_used_patterns
 
@@ -1977,9 +1977,9 @@ done
 
 
 
-lemmas P4_2_used_patterns = P4_2_def always_def weak_previous_def constrained_weak_until_def 
+lemmas P4_2_used_patterns = P4_2_def always_used_patterns weak_previous_def constrained_weak_until_def 
 
-lemmas P4_2_inv_used_patterns = P4_2_inv_def always_inv_def weak_previous_def constrained_weak_until_inv_def previous_inv_def 
+lemmas P4_2_inv_used_patterns = P4_2_inv_def always_inv_used_patterns weak_previous_def constrained_weak_until_inv_def previous_inv_def 
 
 lemmas P4_2_inv_part_used_patterns = P4_2_inv_part_def P4_2_inv_used_patterns
 
@@ -2264,9 +2264,9 @@ done
 
 
 
-lemmas P4_3_used_patterns = P4_3_def always_def weak_previous_def constrained_weak_until_def previous_def 
+lemmas P4_3_used_patterns = P4_3_def always_used_patterns weak_previous_def constrained_weak_until_def previous_def 
 
-lemmas P4_3_inv_used_patterns = P4_3_inv_def always_inv_def weak_previous_def constrained_weak_until_inv_def previous_def previous_inv_def previous_inv_def 
+lemmas P4_3_inv_used_patterns = P4_3_inv_def always_inv_used_patterns weak_previous_def constrained_weak_until_inv_def previous_def previous_inv_def previous_inv_def 
 
 lemmas P4_3_inv_part_used_patterns = P4_3_inv_part_def P4_3_inv_used_patterns
 
@@ -2525,9 +2525,9 @@ done
 
 
 
-lemmas P6_1_used_patterns = P6_1_def always_def weak_previous_def dual_since_def 
+lemmas P6_1_used_patterns = P6_1_def always_used_patterns weak_previous_def dual_since_def 
 
-lemmas P6_1_inv_used_patterns = P6_1_inv_def always_inv_def weak_previous_def dual_since_def previous_inv_def dual_since_def dual_since_inv_def 
+lemmas P6_1_inv_used_patterns = P6_1_inv_def always_inv_used_patterns weak_previous_def dual_since_def previous_inv_def dual_since_def dual_since_inv_def 
 
 lemmas P6_1_inv_part_used_patterns = P6_1_inv_part_def P6_1_inv_used_patterns
 
@@ -2839,9 +2839,9 @@ done
 
 
 
-lemmas P6_2_used_patterns = P6_2_def always_def weak_previous_def dual_since_def weak_until_def 
+lemmas P6_2_used_patterns = P6_2_def always_used_patterns weak_previous_def dual_since_def weak_until_def 
 
-lemmas P6_2_inv_used_patterns = P6_2_inv_def always_inv_def weak_previous_def dual_since_def weak_until_inv_def previous_inv_def dual_since_def dual_since_inv_def 
+lemmas P6_2_inv_used_patterns = P6_2_inv_def always_inv_used_patterns weak_previous_def dual_since_def weak_until_inv_def previous_inv_def dual_since_def dual_since_inv_def 
 
 lemmas P6_2_inv_part_used_patterns = P6_2_inv_part_def P6_2_inv_used_patterns
 
@@ -3109,9 +3109,9 @@ done
 
 
 
-lemmas P_constrained_always_after_max_delay_used_patterns = P_constrained_always_after_max_delay_def P1_2_def constrained_always_def 
+lemmas P_constrained_always_after_max_delay_used_patterns = P_constrained_always_after_max_delay_def P1_2_used_patterns constrained_always_def 
 
-lemmas P_constrained_always_after_max_delay_inv_used_patterns = P_constrained_always_after_max_delay_inv_def P1_2_inv_def constrained_always_inv_def 
+lemmas P_constrained_always_after_max_delay_inv_used_patterns = P_constrained_always_after_max_delay_inv_def P1_2_inv_used_patterns constrained_always_inv_def 
 
 lemmas P_constrained_always_after_max_delay_inv_part_used_patterns = P_constrained_always_after_max_delay_inv_part_def P_constrained_always_after_max_delay_inv_used_patterns
 
@@ -3443,9 +3443,9 @@ done
 
 
 
-lemmas P5_used_patterns = P5_def P3_4_def previous_def 
+lemmas P5_used_patterns = P5_def P3_4_used_patterns previous_def 
 
-lemmas P5_inv_used_patterns = P5_inv_def P3_4_inv_def previous_def previous_inv_def 
+lemmas P5_inv_used_patterns = P5_inv_def P3_4_inv_used_patterns previous_def previous_inv_def 
 
 lemmas P5_inv_part_used_patterns = P5_inv_part_def P5_inv_used_patterns
 
