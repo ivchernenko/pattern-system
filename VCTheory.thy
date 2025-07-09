@@ -163,30 +163,30 @@ fun ltime:: "state => process => nat" where
   "ltime (setPstate s p1 _) p = (if p = p1 then 0 else ltime s p)" |
   "ltime (reset s p1) p = (if p = p1 then 0 else ltime s p)"
 
-fun predEnv:: "state => state" where
-  "predEnv emptyState = emptyState" |
-  "predEnv (toEnv s) =
-    (if (toEnvP s) then s else predEnv s)" |		
-  "predEnv (setVarBool s _ _) = 
-    (if (toEnvP s) then s else predEnv s)" |
-  "predEnv (setVarInt s _ _) = 
-    (if (toEnvP s) then s else predEnv s)" |
-  "predEnv (setVarReal s _ _) = 
-    (if (toEnvP s) then s else predEnv s)" |
-  "predEnv (setVarArrayBool s _ _ _) = 
-    (if (toEnvP s) then s else predEnv s)" |
-  "predEnv (setVarArrayInt s _ _ _) = 
-    (if (toEnvP s) then s else predEnv s)" |
-  "predEnv (setVarArrayReal s _ _ _) = 
-    (if (toEnvP s) then s else predEnv s)" |
-  "predEnv (setPstate s _ _) = 
-    (if (toEnvP s) then s else predEnv s)" |
-  "predEnv (reset s _) = 
-    (if (toEnvP s) then s else predEnv s)"
+fun pred:: "state => state" where
+  "pred emptyState = emptyState" |
+  "pred (toEnv s) =
+    (if (toEnvP s) then s else pred s)" |		
+  "pred (setVarBool s _ _) = 
+    (if (toEnvP s) then s else pred s)" |
+  "pred (setVarInt s _ _) = 
+    (if (toEnvP s) then s else pred s)" |
+  "pred (setVarReal s _ _) = 
+    (if (toEnvP s) then s else pred s)" |
+  "pred (setVarArrayBool s _ _ _) = 
+    (if (toEnvP s) then s else pred s)" |
+  "pred (setVarArrayInt s _ _ _) = 
+    (if (toEnvP s) then s else pred s)" |
+  "pred (setVarArrayReal s _ _ _) = 
+    (if (toEnvP s) then s else pred s)" |
+  "pred (setPstate s _ _) = 
+    (if (toEnvP s) then s else pred s)" |
+  "pred (reset s _) = 
+    (if (toEnvP s) then s else pred s)"
 
 fun shift:: "state => nat => state" where
   "shift s 0 = s" |
-  "shift s (Suc n) = predEnv (shift s n)"
+  "shift s (Suc n) = pred (shift s n)"
 
 fun consecutive where "consecutive s1 s2 = (toEnvP s1 \<and> toEnvP s2 \<and> substate s1 s2 \<and> toEnvNum s1 s2 = 1)"
 
