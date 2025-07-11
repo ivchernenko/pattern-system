@@ -14,11 +14,16 @@ definition since where "since t A1 A2 s s1 \<equiv>
 definition dual_since_inv where "dual_since_inv (t::nat) b t1 A1 A2 s \<equiv> b s \<longrightarrow> dual_since (t1 s) A1 A2 s s"
 
 lemma dual_since_one_point[pastinv]: "dual_since_inv t b t1 A1' A2' s \<Longrightarrow> consecutive s s' \<Longrightarrow>
-(t1 s' > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> b s \<and> always_imp s (A1' s) (A1' s') \<and>
+b s' \<longrightarrow>(t1 s' > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> b s \<and> always_imp s (A1' s) (A1' s') \<and>
 always_imp s (A2' s) (A2' s') \<and>  t1 s < t1 s') \<Longrightarrow>
 dual_since_inv t b  t1 A1' A2' s' "
   unfolding dual_since_inv_def dual_since_def always_imp_def less_state.simps less_eq_state.simps
   apply(rule impI)
+  apply(rotate_tac 2)
+  apply(erule impE)
+   apply assumption
+  subgoal premises prems1
+    apply(insert prems1(2-4))
 apply(rule allI)
   subgoal for r1
     apply(rule impI)
@@ -45,6 +50,7 @@ apply(rule allI)
      apply (metis consecutive.simps substate_trans)
     apply (metis consecutive.elims(2) substate_noteq_imp_substate_of_pred)
     done
+  done
   done
 
 lemma dual_since_L7[patternintro]: " dual_since_inv t b t1 A1' A2' s \<Longrightarrow> consecutive s s' \<Longrightarrow>

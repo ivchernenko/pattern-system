@@ -2283,7 +2283,7 @@ definition P6_1_inv_part where "P6_1_inv_part t b_0 t1_0 b_1 A1 A2 A3 A4 s \<equ
 lemma P6_1_inv_saving_gen: "
 P6_1_inv t b_0 t1_0 b_1 A1 A2 A3 A4_1 s0 \<Longrightarrow>
 consecutive s0 s \<Longrightarrow>
-(((((True \<and> True) \<and> (True \<and> (always_imp s0 (\<lambda> r1 . (A4_1 s0 r1)) (\<lambda> r1 . (A4_1 s r1))))) \<and> (((b_1 s0) \<and> (True \<and> True)) \<or> ((\<not> (A3 s)) \<or> (A4_1 s s)))) \<and> ((b_1 s) --> (((t > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> (True \<and> (True \<and> ((t1_0 s0) < t)))))))) \<and> ((((t1_0 s) > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> (True \<and> (True \<and> ((t1_0 s0) < (t1_0 s)))))))) \<Longrightarrow>
+(((((True \<and> True) \<and> (True \<and> (always_imp s0 (\<lambda> r1 . (A4_1 s0 r1)) (\<lambda> r1 . (A4_1 s r1))))) \<and> (((b_1 s0) \<and> (True \<and> True)) \<or> ((\<not> (A3 s)) \<or> (A4_1 s s)))) \<and> ((b_1 s) --> (((t > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> (True \<and> (True \<and> ((t1_0 s0) < t)))))))) \<and> ((b_0 s) --> ((((t1_0 s) > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> (True \<and> (True \<and> ((t1_0 s0) < (t1_0 s))))))))) \<Longrightarrow>
 P6_1_inv t b_0 t1_0 b_1 A1 A2 A3 A4_1 s"
 
 unfolding P6_1_inv_def
@@ -2414,31 +2414,30 @@ done
 apply(insert prems1(1,3,5))
   apply(erule dual_since_one_point)
   apply simp
-  apply(erule conjE)
+  apply(rule impI)
+  apply(erule impE)
+  apply assumption
   subgoal premises prems14
-  apply(rule conjI)
-  apply(insert prems14(1,2))[1]
-    apply(erule disjE)
-    apply(rule disjI1)
-      apply assumption
-    apply(rule disjI2)
-      apply assumption
   apply(insert prems14(1,3))
-    apply(erule disjE)
-    apply(rule disjI1)
-      apply assumption
-    apply(rule disjI2)
-      apply(erule conjE)
-      subgoal premises prems15
-      apply(rule conjI)
-      apply(insert prems15(1,2))[1]
+    apply(erule conjE)
+    subgoal premises prems15
+    apply(rule conjI)
+    apply(insert prems15(1,2))[1]
+      apply(erule disjE)
+      apply(rule disjI1)
         apply assumption
-      apply(insert prems15(1,3))
+      apply(rule disjI2)
+        apply assumption
+    apply(insert prems15(1,3))
+      apply(erule disjE)
+      apply(rule disjI1)
+        apply assumption
+      apply(rule disjI2)
         apply(erule conjE)
         subgoal premises prems16
         apply(rule conjI)
         apply(insert prems16(1,2))[1]
-          apply(rule always_imp_refl)
+          apply assumption
         apply(insert prems16(1,3))
           apply(erule conjE)
           subgoal premises prems17
@@ -2446,10 +2445,17 @@ apply(insert prems1(1,3,5))
           apply(insert prems17(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems17(1,3))
-            apply assumption
+            apply(erule conjE)
+            subgoal premises prems18
+            apply(rule conjI)
+            apply(insert prems18(1,2))[1]
+              apply(rule always_imp_refl)
+            apply(insert prems18(1,3))
+              apply assumption
+            done
           done
         done
-      done
+    done
   done
 done
 done
@@ -2506,7 +2512,7 @@ done
 lemma P6_1_inv_saving: "
 P6_1_inv_part t b_0 t1_0 b_1 A1 A2 A3 A4 s0 \<Longrightarrow>
 consecutive s0 s \<Longrightarrow>
-((((b_1 s0) \<or> ((\<not> (A3 s)) \<or> (A4 s))) \<and> ((b_1 s) --> (((t > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> ((t1_0 s0) < t)))))) \<and> ((((t1_0 s) > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> ((t1_0 s0) < (t1_0 s)))))) \<Longrightarrow>
+((((b_1 s0) \<or> ((\<not> (A3 s)) \<or> (A4 s))) \<and> ((b_1 s) --> (((t > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> ((t1_0 s0) < t)))))) \<and> ((b_0 s) --> ((((t1_0 s) > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> ((t1_0 s0) < (t1_0 s))))))) \<Longrightarrow>
 P6_1_inv_part t b_0 t1_0 b_1 A1 A2 A3 A4 s"
 
 unfolding P6_1_inv_part_def P6_1_part_def
@@ -2544,7 +2550,7 @@ definition P6_2_inv_part where "P6_2_inv_part t b_0 t1_0 b_1 w_0 A1 A2 A3 A4 A5 
 lemma P6_2_inv_saving_gen: "
 P6_2_inv t b_0 t1_0 b_1 w_0 A1 A2 A3 A4_1 A5_1 s0 \<Longrightarrow>
 consecutive s0 s \<Longrightarrow>
-(((((True \<and> True) \<and> (True \<and> ((always_imp s0 (A4_1 s0) (A4_1 s)) \<and> ((always_imp s0 (A5_1 s0) (A5_1 s)) \<and> ((\<not> (w_0 s0)) \<or> ((A5_1 s s) \<or> ((w_0 s) \<and> (A4_1 s s)))))))) \<and> (((b_1 s0) \<and> (True \<and> True)) \<or> ((\<not> (A3 s)) \<or> ((A5_1 s s) \<or> ((w_0 s) \<and> (A4_1 s s)))))) \<and> ((b_1 s) --> (((t > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> (True \<and> (True \<and> ((t1_0 s0) < t)))))))) \<and> ((((t1_0 s) > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> (True \<and> (True \<and> ((t1_0 s0) < (t1_0 s)))))))) \<Longrightarrow>
+(((((True \<and> True) \<and> (True \<and> ((always_imp s0 (A4_1 s0) (A4_1 s)) \<and> ((always_imp s0 (A5_1 s0) (A5_1 s)) \<and> ((\<not> (w_0 s0)) \<or> ((A5_1 s s) \<or> ((w_0 s) \<and> (A4_1 s s)))))))) \<and> (((b_1 s0) \<and> (True \<and> True)) \<or> ((\<not> (A3 s)) \<or> ((A5_1 s s) \<or> ((w_0 s) \<and> (A4_1 s s)))))) \<and> ((b_1 s) --> (((t > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> (True \<and> (True \<and> ((t1_0 s0) < t)))))))) \<and> ((b_0 s) --> ((((t1_0 s) > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> (True \<and> (True \<and> ((t1_0 s0) < (t1_0 s))))))))) \<Longrightarrow>
 P6_2_inv t b_0 t1_0 b_1 w_0 A1 A2 A3 A4_1 A5_1 s"
 
 unfolding P6_2_inv_def
@@ -2719,31 +2725,30 @@ done
 apply(insert prems1(1,3,5))
   apply(erule dual_since_one_point)
   apply simp
-  apply(erule conjE)
+  apply(rule impI)
+  apply(erule impE)
+  apply assumption
   subgoal premises prems18
-  apply(rule conjI)
-  apply(insert prems18(1,2))[1]
-    apply(erule disjE)
-    apply(rule disjI1)
-      apply assumption
-    apply(rule disjI2)
-      apply assumption
   apply(insert prems18(1,3))
-    apply(erule disjE)
-    apply(rule disjI1)
-      apply assumption
-    apply(rule disjI2)
-      apply(erule conjE)
-      subgoal premises prems19
-      apply(rule conjI)
-      apply(insert prems19(1,2))[1]
+    apply(erule conjE)
+    subgoal premises prems19
+    apply(rule conjI)
+    apply(insert prems19(1,2))[1]
+      apply(erule disjE)
+      apply(rule disjI1)
         apply assumption
-      apply(insert prems19(1,3))
+      apply(rule disjI2)
+        apply assumption
+    apply(insert prems19(1,3))
+      apply(erule disjE)
+      apply(rule disjI1)
+        apply assumption
+      apply(rule disjI2)
         apply(erule conjE)
         subgoal premises prems20
         apply(rule conjI)
         apply(insert prems20(1,2))[1]
-          apply(rule always_imp_refl)
+          apply assumption
         apply(insert prems20(1,3))
           apply(erule conjE)
           subgoal premises prems21
@@ -2751,10 +2756,17 @@ apply(insert prems1(1,3,5))
           apply(insert prems21(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems21(1,3))
-            apply assumption
+            apply(erule conjE)
+            subgoal premises prems22
+            apply(rule conjI)
+            apply(insert prems22(1,2))[1]
+              apply(rule always_imp_refl)
+            apply(insert prems22(1,3))
+              apply assumption
+            done
           done
         done
-      done
+    done
   done
 done
 done
@@ -2820,7 +2832,7 @@ done
 lemma P6_2_inv_saving: "
 P6_2_inv_part t b_0 t1_0 b_1 w_0 A1 A2 A3 A4 A5 s0 \<Longrightarrow>
 consecutive s0 s \<Longrightarrow>
-(((((\<not> (w_0 s0)) \<or> ((A5 s) \<or> ((w_0 s) \<and> (A4 s)))) \<and> ((b_1 s0) \<or> ((\<not> (A3 s)) \<or> ((A5 s) \<or> ((w_0 s) \<and> (A4 s)))))) \<and> ((b_1 s) --> (((t > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> ((t1_0 s0) < t)))))) \<and> ((((t1_0 s) > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> ((t1_0 s0) < (t1_0 s)))))) \<Longrightarrow>
+(((((\<not> (w_0 s0)) \<or> ((A5 s) \<or> ((w_0 s) \<and> (A4 s)))) \<and> ((b_1 s0) \<or> ((\<not> (A3 s)) \<or> ((A5 s) \<or> ((w_0 s) \<and> (A4 s)))))) \<and> ((b_1 s) --> (((t > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> ((t1_0 s0) < t)))))) \<and> ((b_0 s) --> ((((t1_0 s) > 0) \<or> (\<not> (A1 s))) \<and> ((\<not> (A2 s)) \<or> ((b_0 s0) \<and> ((t1_0 s0) < (t1_0 s))))))) \<Longrightarrow>
 P6_2_inv_part t b_0 t1_0 b_1 w_0 A1 A2 A3 A4 A5 s"
 
 unfolding P6_2_inv_part_def P6_2_part_def
