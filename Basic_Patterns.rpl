@@ -200,6 +200,41 @@ lemmas {
 	};
 };
 
+pastreq pattern since(const: t formulas: A1, A2) with since_inv;
+pasteinv pattern since_inv(const: t fun: b, t1 formulas: A_1, A_2)
+lemmas {
+	LS6 lemma since_one_point {
+		const: t
+		fun: b, t1
+		extra invariant formulas: A_1, A_2
+		init state: s0
+		final state: s
+		premise b(s) --> frm(t1(s) = 0) /\ A_2(s, s) \/ alwaysimp(s0, A_1(s0), A_1(s)) /\ alwaysimp(s0, A_2(s0), A_2(s)) /\ frm(b(s)) /\ frm(t1(s) <= t1(s0) + 1) /\ A_1(s, s)
+	};
+	LS7 lemma since_L7 {
+		const: t
+		fun: b, t1
+		extra invariant formulas: A_1, A_2
+		init state: s0
+		final state: s
+		premise frm(t = 0) /\ A_2(s, s) \/ alwaysimp(s0, A_1(s0), A_1(s)) /\ alwaysimp(s0, A_2(s0), A_2(s)) /\ frm(b(s)) /\ frm(t <= t1(s0) + 1) /\ A_1(s, s)
+	};
+	LS4 lemma since_L4 {
+		const: t
+		extra invariant formulas: A_1, A_2
+		init state: s0
+		final state: s
+		premise alwaysimp(s0, A_1(s0), A_1(s)) /\ alwaysimp(s0, A_2(s0), A_2(s))
+	};
+	LS5 lemma since_L5 {
+		const: t
+		extra invariant formulas: A_1, A_2
+		requirement formulas: A1, A2
+		final state: s
+		premise alwaysimp(s, A_1(s), A1(s)) /\ alwaysimp(s, A_2(s), A2(s))
+	};
+};
+
 pastreq pattern dual_since(const: t formulas: A1, A2) with dual_since_inv;
 pasteinv pattern dual_since_inv(const: t fun: b, t1 formulas: A_1, A_2)
 lemmas {
@@ -211,7 +246,7 @@ lemmas {
 		final state: s
 		premise b(s) --> (frm(t1(s) > 0) \/ A_2(s, s)) /\ 
 		(A_1(s, s) \/ frm(b(s0)) /\ alwaysimp(s0, A_1(s0), A_1(s)) /\
-			 alwaysimp(s0, A_2(s0), A_2(s)) /\ frm(t1(s0) < t1(s))
+			 alwaysimp(s0, A_2(s0), A_2(s)) /\ (frm(t1(s0) = 0) /\ A_2(s, s) \/ frm(t1(s0) < t1(s)))
 		)
 	};
 	LS7 lemma dual_since_L7 {
@@ -222,7 +257,7 @@ lemmas {
 		final state: s
 		premise (frm(t > 0) \/ A_2(s, s)) /\ 
 		(A_1(s, s) \/ frm(b(s0)) /\ alwaysimp(s0, A_1(s0), A_1(s)) /\
-			 alwaysimp(s0, A_2(s0), A_2(s)) /\ frm(t1(s0) < t)
+			 alwaysimp(s0, A_2(s0), A_2(s)) /\ (frm(t1(s0) = 0) /\ A_2(s, s) \/ frm(t1(s0) < t))
 		)
 	};
 	LS4 lemma dual_since_L4 {
