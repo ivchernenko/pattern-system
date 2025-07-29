@@ -209,7 +209,7 @@ lemmas {
 		extra invariant formulas: A_1, A_2
 		init state: s0
 		final state: s
-		premise b(s) --> frm(t1(s) = 0) /\ A_2(s, s) \/ alwaysimp(s0, A_1(s0), A_1(s)) /\ alwaysimp(s0, A_2(s0), A_2(s)) /\ frm(b(s)) /\ frm(t1(s) <= t1(s0) + 1) /\ A_1(s, s)
+		premise b(s) --> frm(t1(s) = 0) /\ A_2(s, s) \/ alwaysimp(s0, A_1(s0), A_1(s)) /\ alwaysimp(s0, A_2(s0), A_2(s)) /\ frm(b(s0)) /\ frm(t1(s) <= t1(s0) + 1) /\ A_1(s, s)
 	};
 	LS7 lemma since_L7 {
 		const: t
@@ -217,7 +217,7 @@ lemmas {
 		extra invariant formulas: A_1, A_2
 		init state: s0
 		final state: s
-		premise frm(t = 0) /\ A_2(s, s) \/ alwaysimp(s0, A_1(s0), A_1(s)) /\ alwaysimp(s0, A_2(s0), A_2(s)) /\ frm(b(s)) /\ frm(t <= t1(s0) + 1) /\ A_1(s, s)
+		premise frm(t = 0) /\ A_2(s, s) \/ alwaysimp(s0, A_1(s0), A_1(s)) /\ alwaysimp(s0, A_2(s0), A_2(s)) /\ frm(b(s0)) /\ frm(t <= t1(s0) + 1) /\ A_1(s, s)
 	};
 	LS4 lemma since_L4 {
 		const: t
