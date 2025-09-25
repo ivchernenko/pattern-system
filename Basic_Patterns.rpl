@@ -27,6 +27,37 @@ lemmas {
 	};
 };
 
+futurereq pattern constrained_until2(const: t1, t2 formulas: A1, A2) with constrained_until2_inv;
+futureeinv pattern constrained_until2_inv(const: t1, t2 fun: t1_1, t2_1 formulas: A1, A2)
+lemmas {
+	LS1 lemma constrained_until2_rule {
+		const: t1, t2
+		fun: t1_1, t2_1
+		extra invariant formulas: A1_1, A2_1
+		init state: s0
+		final state: s
+		premise alwaysimp(s0, A1_1(s0), A1_1(s)) /\ alwaysimp(s0, A2_1(s0), A2_1(s)) /\
+		(frm(t2_1(s0) = 0) \/ frm(t1_1(s0) >= t2_1(s0)) \/ A2_1(s, s) /\ frm(t1_1(s0) + 1 >= t1) /\ frm(t2_1(s0) <= t2) \/
+			A1_1(s, s) /\ frm(t1_1(s0) + 1 >= t1_1(s)) /\ frm(t2_1(s0) < t2_1(s))
+		)
+	};
+	LS3 lemma constrained_until2_einv2req {
+		const: t1, t2
+		fun: t1_1, t2_1
+		extra invariant formulas: A1_1, A2_1
+		requirement formulas: A1, A2
+		final state: s
+		premise alwaysimp(s, A1_1(s), A1(s)) /\ alwaysimp(s, A2_1(s), A2(s)) /\ frm(t2_1(s) <= t2)
+	};
+	LS2 lemma constrained_until2_one_point {
+		const: t1, t2
+		fun: t1_1, t2_1
+		extra invariant formulas: A1_1, A2_1
+		final state: s
+		premise frm(t1 = 0) /\ A2_1(s, s) \/ A1_1(s, s) /\ frm(t1_1(s) = 0) /\ frm(t2_1(s) > 0)
+	};
+};
+
 futurereq pattern constrained_always(const: t formulas: A) with constrained_always_inv;
 futureeinv pattern constrained_always_inv(const: t fun: t1 formulas: A_1)
 lemmas {
