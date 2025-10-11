@@ -6,6 +6,8 @@ Constrained_Always
 Weak_Until
 Constrained_Weak_Until
 Since
+EDTL_Low_Steady
+EDTL_High_Steady
 begin
 
 end

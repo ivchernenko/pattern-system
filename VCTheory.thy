@@ -183,6 +183,8 @@ fun pred:: "state => state" where
     (if (toEnvP s) then s else pred s)" |
   "pred (reset s _) = 
     (if (toEnvP s) then s else pred s)"
+	
+abbreviation prev :: "state => state" where "prev \<equiv> pred"
 
 fun shift:: "state => nat => state" where
   "shift s 0 = s" |
