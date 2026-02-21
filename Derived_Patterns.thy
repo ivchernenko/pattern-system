@@ -21,7 +21,7 @@ apply(erule conjE)
 subgoal premises prems1
 apply(rule conjI)
 apply(insert prems1(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems2
@@ -33,7 +33,7 @@ apply(erule always_rule)
       subgoal premises prems3
       apply(rule conjI)
       apply(insert prems3(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule always_imp_refl)
       apply(insert prems3(1,3))
@@ -45,38 +45,38 @@ apply(erule always_rule)
           apply(insert prems4(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems4(1,3))
-            apply assumption
+            apply simp
           done
       done
   apply(insert prems2(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems1(3)])
+      apply(rule weak_previous_L7[OF prems1(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems5
         apply(rule conjI)
         apply(insert prems5(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems5(1,3))
           apply(rule always_imp_refl)
         done
     apply(rule disjI2)
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply assumption
+        apply simp
   done
 apply(insert prems1(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems6
   apply(insert prems6(1,3))
-    apply assumption
+    apply simp
   done
 done
 done
@@ -93,7 +93,7 @@ apply(insert prems1(1,2))
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -101,7 +101,7 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule always_imp_refl)
     apply(insert prems3(1,3))
@@ -113,7 +113,7 @@ apply simp
         apply(insert prems4(1,2))[1]
           apply(rule always_imp_refl)
         apply(insert prems4(1,3))
-          apply assumption
+          apply simp
         done
     done
 done
@@ -150,11 +150,11 @@ lemmas always2_inv_part_used_patterns = always2_inv_part_def always2_inv_used_pa
 
 lemmas always2_part_used_patterns = always2_part_def always2_used_patterns
 
-definition P1_1 where "P1_1 t A1 A2 A3 s \<equiv> (always (\<lambda> r2 r1 . ((\<not> (A1 r1)) \<or> (constrained_until t A2 A3 r2 r1))) s)"
+definition P1_1 where "P1_1 t A1 A2 A3 s \<equiv> (always (\<lambda> r2 r1 . ((\<not> (A1 r1)) \<or> (constrained_until0 t A2 A3 r2 r1))) s)"
 
 definition P1_1_part where "P1_1_part t A1 A2 A3 s \<equiv> (P1_1 t A1 (\<lambda> s s1 . (A2 s1)) (\<lambda> s s1 . (A3 s1)) s)"
 
-definition P1_1_inv where "P1_1_inv t t1_0 A1 A2_1 A3_1 s \<equiv> (always_inv (\<lambda> r2 r1 . ((\<not> (A1 r1)) \<or> (constrained_until_inv t t1_0 A2_1 A3_1 r2 r1))) s)"
+definition P1_1_inv where "P1_1_inv t t1_0 A1 A2_1 A3_1 s \<equiv> (always_inv (\<lambda> r2 r1 . ((\<not> (A1 r1)) \<or> (constrained_until0_inv t t1_0 A2_1 A3_1 r2 r1))) s)"
 
 definition P1_1_inv_part where "P1_1_inv_part t t1_0 A1 A2 A3 s \<equiv> (P1_1_inv t t1_0 A1 (\<lambda> s s1 . (A2 s1)) (\<lambda> s s1 . (A3 s1)) s)"
 
@@ -165,7 +165,7 @@ consecutive s0 s \<Longrightarrow>
 P1_1_inv t t1_0 A1 A2_1 A3_1 s"
 
 unfolding P1_1_inv_def
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems1
@@ -179,23 +179,23 @@ apply(erule always_rule)
       apply(insert prems2(1,2))[1]
         apply(rule always_imp_refl)
       apply(insert prems2(1,3))
-        apply(rule constrained_until_rule)
+        apply(rule constrained_until0_L1)
         apply simp
           apply(erule conjE)
           subgoal premises prems3
           apply(rule conjI)
           apply(insert prems3(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems3(1,3))
             apply(erule conjE)
             subgoal premises prems4
             apply(rule conjI)
             apply(insert prems4(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems4(1,3))
               apply(erule disjE)
               apply(rule disjI1)
-                apply assumption
+                apply simp
               apply(rule disjI2)
                 apply(erule disjE)
                 apply(rule disjI1)
@@ -203,18 +203,18 @@ apply(erule always_rule)
                   subgoal premises prems5
                   apply(rule conjI)
                   apply(insert prems5(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems5(1,3))
-                    apply assumption
+                    apply simp
                   done
                 apply(rule disjI2)
                   apply(erule conjE)
                   subgoal premises prems6
                   apply(rule conjI)
                   apply(insert prems6(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems6(1,3))
-                    apply assumption
+                    apply simp
                   done
             done
           done
@@ -222,21 +222,21 @@ apply(erule always_rule)
   apply(insert prems1(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply assumption
+      apply simp
     apply(rule disjI2)
-      apply(rule constrained_until_one_point)
+      apply(rule constrained_until0_L2)
       apply simp
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
           apply(erule conjE)
           subgoal premises prems7
           apply(rule conjI)
           apply(insert prems7(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems7(1,3))
-            apply assumption
+            apply simp
           done
   done
 done
@@ -248,7 +248,7 @@ toEnvP s0 \<Longrightarrow>
 P1_1 t A1 A2 A3 s0"
 
 unfolding P1_1_inv_def P1_1_def
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -258,21 +258,21 @@ apply simp
     apply(insert prems3(1,2))[1]
       apply(rule always_imp_refl)
     apply(insert prems3(1,3))
-      apply(rule constrained_until_einv2req)
+      apply(rule constrained_until0_L3)
       apply simp
         apply(erule conjE)
         subgoal premises prems4
         apply(rule conjI)
         apply(insert prems4(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems4(1,3))
           apply(erule conjE)
           subgoal premises prems5
           apply(rule conjI)
           apply(insert prems5(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems5(1,3))
-            apply assumption
+            apply simp
           done
         done
     done
@@ -300,19 +300,19 @@ done
 
 
 
-lemmas P1_1_used_patterns = P1_1_def always_used_patterns constrained_until_def 
+lemmas P1_1_used_patterns = P1_1_def always_used_patterns constrained_until0_def 
 
-lemmas P1_1_inv_used_patterns = P1_1_inv_def always_inv_used_patterns constrained_until_inv_def 
+lemmas P1_1_inv_used_patterns = P1_1_inv_def always_inv_used_patterns constrained_until0_inv_def 
 
 lemmas P1_1_inv_part_used_patterns = P1_1_inv_part_def P1_1_inv_used_patterns
 
 lemmas P1_1_part_used_patterns = P1_1_part_def P1_1_used_patterns
 
-definition P1_2 where "P1_2 t A11 A12 A2 A3 s \<equiv> (always (\<lambda> r2 r1 . ((weak_previous (\<lambda> r4 r3 . (\<not> (A11 r3))) r2 r1) \<or> ((\<not> (A12 r1)) \<or> (constrained_until t A2 A3 r2 r1)))) s)"
+definition P1_2 where "P1_2 t A11 A12 A2 A3 s \<equiv> (always (\<lambda> r2 r1 . ((weak_previous (\<lambda> r4 r3 . (\<not> (A11 r3))) r2 r1) \<or> ((\<not> (A12 r1)) \<or> (constrained_until0 t A2 A3 r2 r1)))) s)"
 
 definition P1_2_part where "P1_2_part t A11 A12 A2 A3 s \<equiv> (P1_2 t A11 A12 (\<lambda> s s1 . (A2 s1)) (\<lambda> s s1 . (A3 s1)) s)"
 
-definition P1_2_inv where "P1_2_inv t b_0 t1_0 A11 A12 A2_1 A3_1 s \<equiv> ((always_inv (\<lambda> r2 r1 . ((weak_previous (\<lambda> r4 r3 . (\<not> (A11 r3))) r2 r1) \<or> ((\<not> (A12 r1)) \<or> (constrained_until_inv t t1_0 A2_1 A3_1 r2 r1)))) s) \<and> (previous_inv b_0 (\<lambda> r4 r3 . (\<not> (A11 r3))) s))"
+definition P1_2_inv where "P1_2_inv t b_0 t1_0 A11 A12 A2_1 A3_1 s \<equiv> ((always_inv (\<lambda> r2 r1 . ((weak_previous (\<lambda> r4 r3 . (\<not> (A11 r3))) r2 r1) \<or> ((\<not> (A12 r1)) \<or> (constrained_until0_inv t t1_0 A2_1 A3_1 r2 r1)))) s) \<and> (previous_inv b_0 (\<lambda> r4 r3 . (\<not> (A11 r3))) s))"
 
 definition P1_2_inv_part where "P1_2_inv_part t b_0 t1_0 A11 A12 A2 A3 s \<equiv> (P1_2_inv t b_0 t1_0 A11 A12 (\<lambda> s s1 . (A2 s1)) (\<lambda> s s1 . (A3 s1)) s)"
 
@@ -328,7 +328,7 @@ apply(erule conjE)
 subgoal premises prems1
 apply(rule conjI)
 apply(insert prems1(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems2
@@ -340,7 +340,7 @@ apply(erule always_rule)
       subgoal premises prems3
       apply(rule conjI)
       apply(insert prems3(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule always_imp_refl)
       apply(insert prems3(1,3))
@@ -352,23 +352,23 @@ apply(erule always_rule)
           apply(insert prems4(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems4(1,3))
-            apply(rule constrained_until_rule)
+            apply(rule constrained_until0_L1)
             apply simp
               apply(erule conjE)
               subgoal premises prems5
               apply(rule conjI)
               apply(insert prems5(1,2))[1]
-                apply assumption
+                apply simp
               apply(insert prems5(1,3))
                 apply(erule conjE)
                 subgoal premises prems6
                 apply(rule conjI)
                 apply(insert prems6(1,2))[1]
-                  apply assumption
+                  apply simp
                 apply(insert prems6(1,3))
                   apply(erule disjE)
                   apply(rule disjI1)
-                    apply assumption
+                    apply simp
                   apply(rule disjI2)
                     apply(erule disjE)
                     apply(rule disjI1)
@@ -376,18 +376,18 @@ apply(erule always_rule)
                       subgoal premises prems7
                       apply(rule conjI)
                       apply(insert prems7(1,2))[1]
-                        apply assumption
+                        apply simp
                       apply(insert prems7(1,3))
-                        apply assumption
+                        apply simp
                       done
                     apply(rule disjI2)
                       apply(erule conjE)
                       subgoal premises prems8
                       apply(rule conjI)
                       apply(insert prems8(1,2))[1]
-                        apply assumption
+                        apply simp
                       apply(insert prems8(1,3))
-                        apply assumption
+                        apply simp
                       done
                 done
               done
@@ -396,45 +396,45 @@ apply(erule always_rule)
   apply(insert prems2(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems1(3)])
+      apply(rule weak_previous_L7[OF prems1(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems9
         apply(rule conjI)
         apply(insert prems9(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems9(1,3))
           apply(rule always_imp_refl)
         done
     apply(rule disjI2)
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply(rule constrained_until_one_point)
+        apply(rule constrained_until0_L2)
         apply simp
           apply(erule disjE)
           apply(rule disjI1)
-            apply assumption
+            apply simp
           apply(rule disjI2)
             apply(erule conjE)
             subgoal premises prems10
             apply(rule conjI)
             apply(insert prems10(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems10(1,3))
-              apply assumption
+              apply simp
             done
   done
 apply(insert prems1(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems11
   apply(insert prems11(1,3))
-    apply assumption
+    apply simp
   done
 done
 done
@@ -451,7 +451,7 @@ apply(insert prems1(1,2))
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -459,7 +459,7 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule always_imp_refl)
     apply(insert prems3(1,3))
@@ -471,21 +471,21 @@ apply simp
         apply(insert prems4(1,2))[1]
           apply(rule always_imp_refl)
         apply(insert prems4(1,3))
-          apply(rule constrained_until_einv2req)
+          apply(rule constrained_until0_L3)
           apply simp
             apply(erule conjE)
             subgoal premises prems5
             apply(rule conjI)
             apply(insert prems5(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems5(1,3))
               apply(erule conjE)
               subgoal premises prems6
               apply(rule conjI)
               apply(insert prems6(1,2))[1]
-                apply assumption
+                apply simp
               apply(insert prems6(1,3))
-                apply assumption
+                apply simp
               done
             done
         done
@@ -516,9 +516,9 @@ done
 
 
 
-lemmas P1_2_used_patterns = P1_2_def always_used_patterns weak_previous_def constrained_until_def 
+lemmas P1_2_used_patterns = P1_2_def always_used_patterns weak_previous_def constrained_until0_def 
 
-lemmas P1_2_inv_used_patterns = P1_2_inv_def always_inv_used_patterns weak_previous_def constrained_until_inv_def previous_inv_def 
+lemmas P1_2_inv_used_patterns = P1_2_inv_def always_inv_used_patterns weak_previous_def constrained_until0_inv_def previous_inv_def 
 
 lemmas P1_2_inv_part_used_patterns = P1_2_inv_part_def P1_2_inv_used_patterns
 
@@ -539,7 +539,7 @@ consecutive s0 s \<Longrightarrow>
 P2_1_inv t t1_0 A1 A2_1 s"
 
 unfolding P2_1_inv_def
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems1
@@ -553,17 +553,17 @@ apply(erule always_rule)
       apply(insert prems2(1,2))[1]
         apply(rule always_imp_refl)
       apply(insert prems2(1,3))
-        apply(rule constrained_always_rule)
+        apply(rule constrained_always_L1)
         apply simp
           apply(erule disjE)
           apply(rule disjI1)
-            apply assumption
+            apply simp
           apply(rule disjI2)
             apply(erule conjE)
             subgoal premises prems3
             apply(rule conjI)
             apply(insert prems3(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems3(1,3))
               apply(erule conjE)
               subgoal premises prems4
@@ -571,32 +571,32 @@ apply(erule always_rule)
               apply(insert prems4(1,2))[1]
                 apply(erule disjE)
                 apply(rule disjI1)
-                  apply assumption
+                  apply simp
                 apply(rule disjI2)
-                  apply assumption
+                  apply simp
               apply(insert prems4(1,3))
-                apply assumption
+                apply simp
               done
             done
       done
   apply(insert prems1(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply assumption
+      apply simp
     apply(rule disjI2)
-      apply(rule constrained_always_one_point)
+      apply(rule constrained_always_L2)
       apply simp
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
           apply(erule conjE)
           subgoal premises prems5
           apply(rule conjI)
           apply(insert prems5(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems5(1,3))
-            apply assumption
+            apply simp
           done
   done
 done
@@ -608,7 +608,7 @@ toEnvP s0 \<Longrightarrow>
 P2_1 t A1 A2 s0"
 
 unfolding P2_1_inv_def P2_1_def
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -618,9 +618,9 @@ apply simp
     apply(insert prems3(1,2))[1]
       apply(rule always_imp_refl)
     apply(insert prems3(1,3))
-      apply(rule constrained_always_einv2req)
+      apply(rule constrained_always_L3)
       apply simp
-        apply assumption
+        apply simp
     done
 done
 
@@ -674,7 +674,7 @@ apply(erule conjE)
 subgoal premises prems1
 apply(rule conjI)
 apply(insert prems1(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems2
@@ -686,7 +686,7 @@ apply(erule always_rule)
       subgoal premises prems3
       apply(rule conjI)
       apply(insert prems3(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule always_imp_refl)
       apply(insert prems3(1,3))
@@ -698,17 +698,17 @@ apply(erule always_rule)
           apply(insert prems4(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems4(1,3))
-            apply(rule constrained_always_rule)
+            apply(rule constrained_always_L1)
             apply simp
               apply(erule disjE)
               apply(rule disjI1)
-                apply assumption
+                apply simp
               apply(rule disjI2)
                 apply(erule conjE)
                 subgoal premises prems5
                 apply(rule conjI)
                 apply(insert prems5(1,2))[1]
-                  apply assumption
+                  apply simp
                 apply(insert prems5(1,3))
                   apply(erule conjE)
                   subgoal premises prems6
@@ -716,11 +716,11 @@ apply(erule always_rule)
                   apply(insert prems6(1,2))[1]
                     apply(erule disjE)
                     apply(rule disjI1)
-                      apply assumption
+                      apply simp
                     apply(rule disjI2)
-                      apply assumption
+                      apply simp
                   apply(insert prems6(1,3))
-                    apply assumption
+                    apply simp
                   done
                 done
           done
@@ -728,45 +728,45 @@ apply(erule always_rule)
   apply(insert prems2(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems1(3)])
+      apply(rule weak_previous_L7[OF prems1(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems7
         apply(rule conjI)
         apply(insert prems7(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems7(1,3))
           apply(rule always_imp_refl)
         done
     apply(rule disjI2)
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply(rule constrained_always_one_point)
+        apply(rule constrained_always_L2)
         apply simp
           apply(erule disjE)
           apply(rule disjI1)
-            apply assumption
+            apply simp
           apply(rule disjI2)
             apply(erule conjE)
             subgoal premises prems8
             apply(rule conjI)
             apply(insert prems8(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems8(1,3))
-              apply assumption
+              apply simp
             done
   done
 apply(insert prems1(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems9
   apply(insert prems9(1,3))
-    apply assumption
+    apply simp
   done
 done
 done
@@ -783,7 +783,7 @@ apply(insert prems1(1,2))
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -791,7 +791,7 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule always_imp_refl)
     apply(insert prems3(1,3))
@@ -803,9 +803,9 @@ apply simp
         apply(insert prems4(1,2))[1]
           apply(rule always_imp_refl)
         apply(insert prems4(1,3))
-          apply(rule constrained_always_einv2req)
+          apply(rule constrained_always_L3)
           apply simp
-            apply assumption
+            apply simp
         done
     done
 done
@@ -857,7 +857,7 @@ consecutive s0 s \<Longrightarrow>
 P3_1_inv w_0 A1 A2_1 A3_1 s"
 
 unfolding P3_1_inv_def
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems1
@@ -871,35 +871,35 @@ apply(erule always_rule)
       apply(insert prems2(1,2))[1]
         apply(rule always_imp_refl)
       apply(insert prems2(1,3))
-        apply(rule weak_until_rule)
+        apply(rule weak_until_L1)
         apply simp
           apply(erule conjE)
           subgoal premises prems3
           apply(rule conjI)
           apply(insert prems3(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems3(1,3))
             apply(erule conjE)
             subgoal premises prems4
             apply(rule conjI)
             apply(insert prems4(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems4(1,3))
               apply(erule disjE)
               apply(rule disjI1)
-                apply assumption
+                apply simp
               apply(rule disjI2)
                 apply(erule disjE)
                 apply(rule disjI1)
-                  apply assumption
+                  apply simp
                 apply(rule disjI2)
                   apply(erule conjE)
                   subgoal premises prems5
                   apply(rule conjI)
                   apply(insert prems5(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems5(1,3))
-                    apply assumption
+                    apply simp
                   done
             done
           done
@@ -907,21 +907,21 @@ apply(erule always_rule)
   apply(insert prems1(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply assumption
+      apply simp
     apply(rule disjI2)
-      apply(rule weak_until_one_point)
+      apply(rule weak_until_L2)
       apply simp
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
           apply(erule conjE)
           subgoal premises prems6
           apply(rule conjI)
           apply(insert prems6(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems6(1,3))
-            apply assumption
+            apply simp
           done
   done
 done
@@ -933,7 +933,7 @@ toEnvP s0 \<Longrightarrow>
 P3_1 A1 A2 A3 s0"
 
 unfolding P3_1_inv_def P3_1_def
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -943,15 +943,15 @@ apply simp
     apply(insert prems3(1,2))[1]
       apply(rule always_imp_refl)
     apply(insert prems3(1,3))
-      apply(rule weak_until_einv2req)
+      apply(rule weak_until_L3)
       apply simp
         apply(erule conjE)
         subgoal premises prems4
         apply(rule conjI)
         apply(insert prems4(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems4(1,3))
-          apply assumption
+          apply simp
         done
     done
 done
@@ -1006,7 +1006,7 @@ apply(erule conjE)
 subgoal premises prems1
 apply(rule conjI)
 apply(insert prems1(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems2
@@ -1018,7 +1018,7 @@ apply(erule always_rule)
       subgoal premises prems3
       apply(rule conjI)
       apply(insert prems3(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule always_imp_refl)
       apply(insert prems3(1,3))
@@ -1030,35 +1030,35 @@ apply(erule always_rule)
           apply(insert prems4(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems4(1,3))
-            apply(rule weak_until_rule)
+            apply(rule weak_until_L1)
             apply simp
               apply(erule conjE)
               subgoal premises prems5
               apply(rule conjI)
               apply(insert prems5(1,2))[1]
-                apply assumption
+                apply simp
               apply(insert prems5(1,3))
                 apply(erule conjE)
                 subgoal premises prems6
                 apply(rule conjI)
                 apply(insert prems6(1,2))[1]
-                  apply assumption
+                  apply simp
                 apply(insert prems6(1,3))
                   apply(erule disjE)
                   apply(rule disjI1)
-                    apply assumption
+                    apply simp
                   apply(rule disjI2)
                     apply(erule disjE)
                     apply(rule disjI1)
-                      apply assumption
+                      apply simp
                     apply(rule disjI2)
                       apply(erule conjE)
                       subgoal premises prems7
                       apply(rule conjI)
                       apply(insert prems7(1,2))[1]
-                        apply assumption
+                        apply simp
                       apply(insert prems7(1,3))
-                        apply assumption
+                        apply simp
                       done
                 done
               done
@@ -1067,45 +1067,45 @@ apply(erule always_rule)
   apply(insert prems2(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems1(3)])
+      apply(rule weak_previous_L7[OF prems1(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems8
         apply(rule conjI)
         apply(insert prems8(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems8(1,3))
           apply(rule always_imp_refl)
         done
     apply(rule disjI2)
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply(rule weak_until_one_point)
+        apply(rule weak_until_L2)
         apply simp
           apply(erule disjE)
           apply(rule disjI1)
-            apply assumption
+            apply simp
           apply(rule disjI2)
             apply(erule conjE)
             subgoal premises prems9
             apply(rule conjI)
             apply(insert prems9(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems9(1,3))
-              apply assumption
+              apply simp
             done
   done
 apply(insert prems1(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems10
   apply(insert prems10(1,3))
-    apply assumption
+    apply simp
   done
 done
 done
@@ -1122,7 +1122,7 @@ apply(insert prems1(1,2))
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -1130,7 +1130,7 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule always_imp_refl)
     apply(insert prems3(1,3))
@@ -1142,15 +1142,15 @@ apply simp
         apply(insert prems4(1,2))[1]
           apply(rule always_imp_refl)
         apply(insert prems4(1,3))
-          apply(rule weak_until_einv2req)
+          apply(rule weak_until_L3)
           apply simp
             apply(erule conjE)
             subgoal premises prems5
             apply(rule conjI)
             apply(insert prems5(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems5(1,3))
-              apply assumption
+              apply simp
             done
         done
     done
@@ -1208,7 +1208,7 @@ apply(erule conjE)
 subgoal premises prems1
 apply(rule conjI)
 apply(insert prems1(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems2
@@ -1220,39 +1220,39 @@ apply(erule always_rule)
       subgoal premises prems3
       apply(rule conjI)
       apply(insert prems3(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule always_imp_refl)
       apply(insert prems3(1,3))
-        apply(rule weak_until_rule)
+        apply(rule weak_until_L1)
         apply simp
           apply(erule conjE)
           subgoal premises prems4
           apply(rule conjI)
           apply(insert prems4(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems4(1,3))
             apply(erule conjE)
             subgoal premises prems5
             apply(rule conjI)
             apply(insert prems5(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems5(1,3))
               apply(erule disjE)
               apply(rule disjI1)
-                apply assumption
+                apply simp
               apply(rule disjI2)
                 apply(erule disjE)
                 apply(rule disjI1)
-                  apply assumption
+                  apply simp
                 apply(rule disjI2)
                   apply(erule conjE)
                   subgoal premises prems6
                   apply(rule conjI)
                   apply(insert prems6(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems6(1,3))
-                    apply assumption
+                    apply simp
                   done
             done
           done
@@ -1260,41 +1260,41 @@ apply(erule always_rule)
   apply(insert prems2(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems1(3)])
+      apply(rule weak_previous_L7[OF prems1(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems7
         apply(rule conjI)
         apply(insert prems7(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems7(1,3))
           apply(rule always_imp_refl)
         done
     apply(rule disjI2)
-      apply(rule weak_until_one_point)
+      apply(rule weak_until_L2)
       apply simp
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
           apply(erule conjE)
           subgoal premises prems8
           apply(rule conjI)
           apply(insert prems8(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems8(1,3))
-            apply assumption
+            apply simp
           done
   done
 apply(insert prems1(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems9
   apply(insert prems9(1,3))
-    apply assumption
+    apply simp
   done
 done
 done
@@ -1311,7 +1311,7 @@ apply(insert prems1(1,2))
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -1319,19 +1319,19 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule always_imp_refl)
     apply(insert prems3(1,3))
-      apply(rule weak_until_einv2req)
+      apply(rule weak_until_L3)
       apply simp
         apply(erule conjE)
         subgoal premises prems4
         apply(rule conjI)
         apply(insert prems4(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems4(1,3))
-          apply assumption
+          apply simp
         done
     done
 done
@@ -1393,7 +1393,7 @@ apply(erule conjE)
 subgoal premises prems2
 apply(rule conjI)
 apply(insert prems2(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems3
@@ -1405,7 +1405,7 @@ apply(erule always_rule)
       subgoal premises prems4
       apply(rule conjI)
       apply(insert prems4(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule always_disj_rule)
           apply simp
@@ -1413,42 +1413,42 @@ apply(erule always_rule)
             subgoal premises prems5
             apply(rule conjI)
             apply(insert prems5(1,2))[1]
-              apply(rule weak_previous_LS4)
+              apply(rule weak_previous_L4)
               apply simp
                 apply(rule always_imp_refl)
             apply(insert prems5(1,3))
               apply(rule always_imp_refl)
             done
       apply(insert prems4(1,3))
-        apply(rule weak_until_rule)
+        apply(rule weak_until_L1)
         apply simp
           apply(erule conjE)
           subgoal premises prems6
           apply(rule conjI)
           apply(insert prems6(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems6(1,3))
             apply(erule conjE)
             subgoal premises prems7
             apply(rule conjI)
             apply(insert prems7(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems7(1,3))
               apply(erule disjE)
               apply(rule disjI1)
-                apply assumption
+                apply simp
               apply(rule disjI2)
                 apply(erule disjE)
                 apply(rule disjI1)
-                  apply assumption
+                  apply simp
                 apply(rule disjI2)
                   apply(erule conjE)
                   subgoal premises prems8
                   apply(rule conjI)
                   apply(insert prems8(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems8(1,3))
-                    apply assumption
+                    apply simp
                   done
             done
           done
@@ -1456,13 +1456,13 @@ apply(erule always_rule)
   apply(insert prems3(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems2(3)])
+      apply(rule weak_previous_L7[OF prems2(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems9
         apply(rule conjI)
         apply(insert prems9(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems9(1,3))
           apply(rule always_disj_rule)
           apply simp
@@ -1470,7 +1470,7 @@ apply(erule always_rule)
             subgoal premises prems10
             apply(rule conjI)
             apply(insert prems10(1,2))[1]
-              apply(rule weak_previous_LS4)
+              apply(rule weak_previous_L4)
               apply simp
                 apply(rule always_imp_refl)
             apply(insert prems10(1,3))
@@ -1478,23 +1478,23 @@ apply(erule always_rule)
             done
         done
     apply(rule disjI2)
-      apply(rule weak_until_one_point)
+      apply(rule weak_until_L2)
       apply simp
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
           apply(erule conjE)
           subgoal premises prems11
           apply(rule conjI)
           apply(insert prems11(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems11(1,3))
-            apply assumption
+            apply simp
           done
   done
 apply(insert prems2(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
@@ -1503,29 +1503,29 @@ apply(insert prems2(1,3,5))
   apply(insert prems12(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems1(3)])
+      apply(rule weak_previous_L7[OF prems1(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems13
         apply(rule conjI)
         apply(insert prems13(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems13(1,3))
           apply(rule always_imp_refl)
         done
     apply(rule disjI2)
-      apply assumption
+      apply simp
   done
 done
 apply(insert prems1(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems14
   apply(insert prems14(1,3))
-    apply assumption
+    apply simp
   done
 done
 done
@@ -1543,7 +1543,7 @@ apply(simp only: conj_assoc)
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -1551,7 +1551,7 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule always_disj_rule)
         apply simp
@@ -1559,22 +1559,22 @@ apply simp
           subgoal premises prems4
           apply(rule conjI)
           apply(insert prems4(1,2))[1]
-            apply(rule weak_previous_LS5)
+            apply(rule weak_previous_L5)
             apply simp
               apply(rule always_imp_refl)
           apply(insert prems4(1,3))
             apply(rule always_imp_refl)
           done
     apply(insert prems3(1,3))
-      apply(rule weak_until_einv2req)
+      apply(rule weak_until_L3)
       apply simp
         apply(erule conjE)
         subgoal premises prems5
         apply(rule conjI)
         apply(insert prems5(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems5(1,3))
-          apply assumption
+          apply simp
         done
     done
 done
@@ -1626,7 +1626,7 @@ consecutive s0 s \<Longrightarrow>
 P4_1_inv t t1_0 A1 A2_1 A3_1 s"
 
 unfolding P4_1_inv_def
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems1
@@ -1640,19 +1640,19 @@ apply(erule always_rule)
       apply(insert prems2(1,2))[1]
         apply(rule always_imp_refl)
       apply(insert prems2(1,3))
-        apply(rule constrained_weak_until_rule)
+        apply(rule constrained_weak_until_L1)
         apply simp
           apply(erule conjE)
           subgoal premises prems3
           apply(rule conjI)
           apply(insert prems3(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems3(1,3))
             apply(erule conjE)
             subgoal premises prems4
             apply(rule conjI)
             apply(insert prems4(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems4(1,3))
               apply(erule disjE)
               apply(rule disjI1)
@@ -1660,7 +1660,7 @@ apply(erule always_rule)
                 subgoal premises prems5
                 apply(rule conjI)
                 apply(insert prems5(1,2))[1]
-                  apply assumption
+                  apply simp
                 apply(insert prems5(1,3))
                   apply(erule disjE)
                   apply(rule disjI1)
@@ -1668,43 +1668,43 @@ apply(erule always_rule)
                     subgoal premises prems6
                     apply(rule conjI)
                     apply(insert prems6(1,2))[1]
-                      apply assumption
+                      apply simp
                     apply(insert prems6(1,3))
-                      apply assumption
+                      apply simp
                     done
                   apply(rule disjI2)
                     apply(erule conjE)
                     subgoal premises prems7
                     apply(rule conjI)
                     apply(insert prems7(1,2))[1]
-                      apply assumption
+                      apply simp
                     apply(insert prems7(1,3))
-                      apply assumption
+                      apply simp
                     done
                 done
               apply(rule disjI2)
-                apply assumption
+                apply simp
             done
           done
       done
   apply(insert prems1(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply assumption
+      apply simp
     apply(rule disjI2)
-      apply(rule constrained_weak_until_one_point)
+      apply(rule constrained_weak_until_L2)
       apply simp
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
           apply(erule conjE)
           subgoal premises prems8
           apply(rule conjI)
           apply(insert prems8(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems8(1,3))
-            apply assumption
+            apply simp
           done
   done
 done
@@ -1716,7 +1716,7 @@ toEnvP s0 \<Longrightarrow>
 P4_1 t A1 A2 A3 s0"
 
 unfolding P4_1_inv_def P4_1_def
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -1726,15 +1726,15 @@ apply simp
     apply(insert prems3(1,2))[1]
       apply(rule always_imp_refl)
     apply(insert prems3(1,3))
-      apply(rule constrained_weak_until_einv2req)
+      apply(rule constrained_weak_until_L3)
       apply simp
         apply(erule conjE)
         subgoal premises prems4
         apply(rule conjI)
         apply(insert prems4(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems4(1,3))
-          apply assumption
+          apply simp
         done
     done
 done
@@ -1789,7 +1789,7 @@ apply(erule conjE)
 subgoal premises prems1
 apply(rule conjI)
 apply(insert prems1(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems2
@@ -1801,7 +1801,7 @@ apply(erule always_rule)
       subgoal premises prems3
       apply(rule conjI)
       apply(insert prems3(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule always_imp_refl)
       apply(insert prems3(1,3))
@@ -1813,19 +1813,19 @@ apply(erule always_rule)
           apply(insert prems4(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems4(1,3))
-            apply(rule constrained_weak_until_rule)
+            apply(rule constrained_weak_until_L1)
             apply simp
               apply(erule conjE)
               subgoal premises prems5
               apply(rule conjI)
               apply(insert prems5(1,2))[1]
-                apply assumption
+                apply simp
               apply(insert prems5(1,3))
                 apply(erule conjE)
                 subgoal premises prems6
                 apply(rule conjI)
                 apply(insert prems6(1,2))[1]
-                  apply assumption
+                  apply simp
                 apply(insert prems6(1,3))
                   apply(erule disjE)
                   apply(rule disjI1)
@@ -1833,7 +1833,7 @@ apply(erule always_rule)
                     subgoal premises prems7
                     apply(rule conjI)
                     apply(insert prems7(1,2))[1]
-                      apply assumption
+                      apply simp
                     apply(insert prems7(1,3))
                       apply(erule disjE)
                       apply(rule disjI1)
@@ -1841,22 +1841,22 @@ apply(erule always_rule)
                         subgoal premises prems8
                         apply(rule conjI)
                         apply(insert prems8(1,2))[1]
-                          apply assumption
+                          apply simp
                         apply(insert prems8(1,3))
-                          apply assumption
+                          apply simp
                         done
                       apply(rule disjI2)
                         apply(erule conjE)
                         subgoal premises prems9
                         apply(rule conjI)
                         apply(insert prems9(1,2))[1]
-                          apply assumption
+                          apply simp
                         apply(insert prems9(1,3))
-                          apply assumption
+                          apply simp
                         done
                     done
                   apply(rule disjI2)
-                    apply assumption
+                    apply simp
                 done
               done
           done
@@ -1864,45 +1864,45 @@ apply(erule always_rule)
   apply(insert prems2(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems1(3)])
+      apply(rule weak_previous_L7[OF prems1(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems10
         apply(rule conjI)
         apply(insert prems10(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems10(1,3))
           apply(rule always_imp_refl)
         done
     apply(rule disjI2)
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply(rule constrained_weak_until_one_point)
+        apply(rule constrained_weak_until_L2)
         apply simp
           apply(erule disjE)
           apply(rule disjI1)
-            apply assumption
+            apply simp
           apply(rule disjI2)
             apply(erule conjE)
             subgoal premises prems11
             apply(rule conjI)
             apply(insert prems11(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems11(1,3))
-              apply assumption
+              apply simp
             done
   done
 apply(insert prems1(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems12
   apply(insert prems12(1,3))
-    apply assumption
+    apply simp
   done
 done
 done
@@ -1919,7 +1919,7 @@ apply(insert prems1(1,2))
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -1927,7 +1927,7 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule always_imp_refl)
     apply(insert prems3(1,3))
@@ -1939,15 +1939,15 @@ apply simp
         apply(insert prems4(1,2))[1]
           apply(rule always_imp_refl)
         apply(insert prems4(1,3))
-          apply(rule constrained_weak_until_einv2req)
+          apply(rule constrained_weak_until_L3)
           apply simp
             apply(erule conjE)
             subgoal premises prems5
             apply(rule conjI)
             apply(insert prems5(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems5(1,3))
-              apply assumption
+              apply simp
             done
         done
     done
@@ -2010,7 +2010,7 @@ apply(erule conjE)
 subgoal premises prems2
 apply(rule conjI)
 apply(insert prems2(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems3
@@ -2022,7 +2022,7 @@ apply(erule always_rule)
       subgoal premises prems4
       apply(rule conjI)
       apply(insert prems4(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule always_imp_refl)
       apply(insert prems4(1,3))
@@ -2034,13 +2034,13 @@ apply(erule always_rule)
           apply(insert prems5(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems5(1,3))
-            apply(rule constrained_weak_until_rule)
+            apply(rule constrained_weak_until_L1)
             apply simp
               apply(erule conjE)
               subgoal premises prems6
               apply(rule conjI)
               apply(insert prems6(1,2))[1]
-                apply assumption
+                apply simp
               apply(insert prems6(1,3))
                 apply(erule conjE)
                 subgoal premises prems7
@@ -2052,11 +2052,11 @@ apply(erule always_rule)
                     subgoal premises prems8
                     apply(rule conjI)
                     apply(insert prems8(1,2))[1]
-                      apply(rule previous_LS4)
+                      apply(rule previous_L4)
                       apply simp
-                        apply assumption
+                        apply simp
                     apply(insert prems8(1,3))
-                      apply assumption
+                      apply simp
                     done
                 apply(insert prems7(1,3))
                   apply(erule disjE)
@@ -2065,7 +2065,7 @@ apply(erule always_rule)
                     subgoal premises prems9
                     apply(rule conjI)
                     apply(insert prems9(1,2))[1]
-                      apply assumption
+                      apply simp
                     apply(insert prems9(1,3))
                       apply(erule disjE)
                       apply(rule disjI1)
@@ -2077,34 +2077,34 @@ apply(erule always_rule)
                           subgoal premises prems11
                           apply(rule conjI)
                           apply(insert prems11(1,2))[1]
-                            apply(rule previous_one_point[OF prems1(3)])
+                            apply(rule previous_L7[OF prems1(3)])
                             apply simp
                               apply(erule conjE)
                               subgoal premises prems12
                               apply(rule conjI)
                               apply(insert prems12(1,2))[1]
-                                apply assumption
+                                apply simp
                               apply(insert prems12(1,3))
-                                apply assumption
+                                apply simp
                               done
                           apply(insert prems11(1,3))
-                            apply assumption
+                            apply simp
                           done
                         apply(insert prems10(1,3))
-                          apply assumption
+                          apply simp
                         done
                       apply(rule disjI2)
                         apply(erule conjE)
                         subgoal premises prems13
                         apply(rule conjI)
                         apply(insert prems13(1,2))[1]
-                          apply assumption
+                          apply simp
                         apply(insert prems13(1,3))
-                          apply assumption
+                          apply simp
                         done
                     done
                   apply(rule disjI2)
-                    apply assumption
+                    apply simp
                 done
               done
           done
@@ -2112,22 +2112,22 @@ apply(erule always_rule)
   apply(insert prems3(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems2(3)])
+      apply(rule weak_previous_L7[OF prems2(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems14
         apply(rule conjI)
         apply(insert prems14(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems14(1,3))
           apply(rule always_imp_refl)
         done
     apply(rule disjI2)
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply(rule constrained_weak_until_one_point)
+        apply(rule constrained_weak_until_L2)
         apply simp
           apply(erule disjE)
           apply(rule disjI1)
@@ -2135,49 +2135,49 @@ apply(erule always_rule)
             subgoal premises prems15
             apply(rule conjI)
             apply(insert prems15(1,2))[1]
-              apply(rule previous_one_point[OF prems1(3)])
+              apply(rule previous_L7[OF prems1(3)])
               apply simp
                 apply(erule conjE)
                 subgoal premises prems16
                 apply(rule conjI)
                 apply(insert prems16(1,2))[1]
-                  apply assumption
+                  apply simp
                 apply(insert prems16(1,3))
-                  apply assumption
+                  apply simp
                 done
             apply(insert prems15(1,3))
-              apply assumption
+              apply simp
             done
           apply(rule disjI2)
             apply(erule conjE)
             subgoal premises prems17
             apply(rule conjI)
             apply(insert prems17(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems17(1,3))
-              apply assumption
+              apply simp
             done
   done
 apply(insert prems2(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems18
   apply(insert prems18(1,3))
-    apply assumption
+    apply simp
   done
 done
 apply(insert prems1(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems19
   apply(insert prems19(1,3))
-    apply assumption
+    apply simp
   done
 done
 done
@@ -2195,7 +2195,7 @@ apply(simp only: conj_assoc)
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -2203,7 +2203,7 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule always_imp_refl)
     apply(insert prems3(1,3))
@@ -2215,13 +2215,13 @@ apply simp
         apply(insert prems4(1,2))[1]
           apply(rule always_imp_refl)
         apply(insert prems4(1,3))
-          apply(rule constrained_weak_until_einv2req)
+          apply(rule constrained_weak_until_L3)
           apply simp
             apply(erule conjE)
             subgoal premises prems5
             apply(rule conjI)
             apply(insert prems5(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems5(1,3))
               apply(rule always_conj_rule)
               apply simp
@@ -2229,11 +2229,11 @@ apply simp
                 subgoal premises prems6
                 apply(rule conjI)
                 apply(insert prems6(1,2))[1]
-                  apply(rule previous_LS5)
+                  apply(rule previous_L5)
                   apply simp
-                    apply assumption
+                    apply simp
                 apply(insert prems6(1,3))
-                  apply assumption
+                  apply simp
                 done
             done
         done
@@ -2297,7 +2297,7 @@ apply(erule conjE)
 subgoal premises prems2
 apply(rule conjI)
 apply(insert prems2(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems3
@@ -2309,7 +2309,7 @@ apply(erule always_rule)
       subgoal premises prems4
       apply(rule conjI)
       apply(insert prems4(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule dual_since_L4)
           apply simp
@@ -2330,19 +2330,19 @@ apply(erule always_rule)
           apply(insert prems6(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems6(1,3))
-            apply assumption
+            apply simp
           done
       done
   apply(insert prems3(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems2(3)])
+      apply(rule weak_previous_L7[OF prems2(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems7
         apply(rule conjI)
         apply(insert prems7(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems7(1,3))
           apply(rule dual_since_L4)
           apply simp
@@ -2358,12 +2358,12 @@ apply(erule always_rule)
     apply(rule disjI2)
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply assumption
+        apply simp
   done
 apply(insert prems2(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
@@ -2378,19 +2378,19 @@ apply(insert prems2(1,3,5))
       apply(insert prems10(1,2))[1]
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
-          apply assumption
+          apply simp
       apply(insert prems10(1,3))
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
           apply(erule conjE)
           subgoal premises prems11
           apply(rule conjI)
           apply(insert prems11(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems11(1,3))
             apply(erule conjE)
             subgoal premises prems12
@@ -2410,12 +2410,12 @@ apply(insert prems2(1,3,5))
                   subgoal premises prems14
                   apply(rule conjI)
                   apply(insert prems14(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems14(1,3))
-                    apply assumption
+                    apply simp
                   done
                 apply(rule disjI2)
-                  apply assumption
+                  apply simp
               done
             done
           done
@@ -2423,7 +2423,7 @@ apply(insert prems2(1,3,5))
   done
 done
 apply(insert prems1(1,3,5))
-  apply(erule dual_since_one_point)
+  apply(erule dual_since_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
@@ -2436,19 +2436,19 @@ apply(insert prems1(1,3,5))
     apply(insert prems16(1,2))[1]
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply assumption
+        apply simp
     apply(insert prems16(1,3))
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
         apply(erule conjE)
         subgoal premises prems17
         apply(rule conjI)
         apply(insert prems17(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems17(1,3))
           apply(erule conjE)
           subgoal premises prems18
@@ -2468,12 +2468,12 @@ apply(insert prems1(1,3,5))
                 subgoal premises prems20
                 apply(rule conjI)
                 apply(insert prems20(1,2))[1]
-                  apply assumption
+                  apply simp
                 apply(insert prems20(1,3))
-                  apply assumption
+                  apply simp
                 done
               apply(rule disjI2)
-                apply assumption
+                apply simp
             done
           done
         done
@@ -2495,7 +2495,7 @@ apply(simp only: conj_assoc)
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -2503,7 +2503,7 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule dual_since_L5)
         apply simp
@@ -2524,7 +2524,7 @@ apply simp
         apply(insert prems5(1,2))[1]
           apply(rule always_imp_refl)
         apply(insert prems5(1,3))
-          apply assumption
+          apply simp
         done
     done
 done
@@ -2586,7 +2586,7 @@ apply(erule conjE)
 subgoal premises prems2
 apply(rule conjI)
 apply(insert prems2(1,2,4))[1]
-apply(erule always_rule)
+apply(erule always_inv_saving_gen)
   apply simp
   apply(erule conjE)
   subgoal premises prems3
@@ -2598,7 +2598,7 @@ apply(erule always_rule)
       subgoal premises prems4
       apply(rule conjI)
       apply(insert prems4(1,2))[1]
-        apply(rule weak_previous_LS4)
+        apply(rule weak_previous_L4)
         apply simp
           apply(rule dual_since_L4)
           apply simp
@@ -2619,35 +2619,35 @@ apply(erule always_rule)
           apply(insert prems6(1,2))[1]
             apply(rule always_imp_refl)
           apply(insert prems6(1,3))
-            apply(rule weak_until_rule)
+            apply(rule weak_until_L1)
             apply simp
               apply(erule conjE)
               subgoal premises prems7
               apply(rule conjI)
               apply(insert prems7(1,2))[1]
-                apply assumption
+                apply simp
               apply(insert prems7(1,3))
                 apply(erule conjE)
                 subgoal premises prems8
                 apply(rule conjI)
                 apply(insert prems8(1,2))[1]
-                  apply assumption
+                  apply simp
                 apply(insert prems8(1,3))
                   apply(erule disjE)
                   apply(rule disjI1)
-                    apply assumption
+                    apply simp
                   apply(rule disjI2)
                     apply(erule disjE)
                     apply(rule disjI1)
-                      apply assumption
+                      apply simp
                     apply(rule disjI2)
                       apply(erule conjE)
                       subgoal premises prems9
                       apply(rule conjI)
                       apply(insert prems9(1,2))[1]
-                        apply assumption
+                        apply simp
                       apply(insert prems9(1,3))
-                        apply assumption
+                        apply simp
                       done
                 done
               done
@@ -2656,13 +2656,13 @@ apply(erule always_rule)
   apply(insert prems3(1,3))
     apply(erule disjE)
     apply(rule disjI1)
-      apply(rule weak_previous_one_point[OF prems2(3)])
+      apply(rule weak_previous_L7[OF prems2(3)])
       apply simp
         apply(erule conjE)
         subgoal premises prems10
         apply(rule conjI)
         apply(insert prems10(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems10(1,3))
           apply(rule dual_since_L4)
           apply simp
@@ -2678,25 +2678,25 @@ apply(erule always_rule)
     apply(rule disjI2)
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply(rule weak_until_one_point)
+        apply(rule weak_until_L2)
         apply simp
           apply(erule disjE)
           apply(rule disjI1)
-            apply assumption
+            apply simp
           apply(rule disjI2)
             apply(erule conjE)
             subgoal premises prems12
             apply(rule conjI)
             apply(insert prems12(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems12(1,3))
-              apply assumption
+              apply simp
             done
   done
 apply(insert prems2(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
@@ -2711,19 +2711,19 @@ apply(insert prems2(1,3,5))
       apply(insert prems14(1,2))[1]
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
-          apply assumption
+          apply simp
       apply(insert prems14(1,3))
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
           apply(erule conjE)
           subgoal premises prems15
           apply(rule conjI)
           apply(insert prems15(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems15(1,3))
             apply(erule conjE)
             subgoal premises prems16
@@ -2743,12 +2743,12 @@ apply(insert prems2(1,3,5))
                   subgoal premises prems18
                   apply(rule conjI)
                   apply(insert prems18(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems18(1,3))
-                    apply assumption
+                    apply simp
                   done
                 apply(rule disjI2)
-                  apply assumption
+                  apply simp
               done
             done
           done
@@ -2756,7 +2756,7 @@ apply(insert prems2(1,3,5))
   done
 done
 apply(insert prems1(1,3,5))
-  apply(erule dual_since_one_point)
+  apply(erule dual_since_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
@@ -2769,19 +2769,19 @@ apply(insert prems1(1,3,5))
     apply(insert prems20(1,2))[1]
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
-        apply assumption
+        apply simp
     apply(insert prems20(1,3))
       apply(erule disjE)
       apply(rule disjI1)
-        apply assumption
+        apply simp
       apply(rule disjI2)
         apply(erule conjE)
         subgoal premises prems21
         apply(rule conjI)
         apply(insert prems21(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems21(1,3))
           apply(erule conjE)
           subgoal premises prems22
@@ -2801,12 +2801,12 @@ apply(insert prems1(1,3,5))
                 subgoal premises prems24
                 apply(rule conjI)
                 apply(insert prems24(1,2))[1]
-                  apply assumption
+                  apply simp
                 apply(insert prems24(1,3))
-                  apply assumption
+                  apply simp
                 done
               apply(rule disjI2)
-                apply assumption
+                apply simp
             done
           done
         done
@@ -2828,7 +2828,7 @@ apply(simp only: conj_assoc)
 apply(erule conjE)
 subgoal premises prems2
 apply(insert prems2(1,2) prems1(3))
-apply(erule always_einv2req)
+apply(erule always_einv_imp_req_gen)
 apply simp
   apply(rule always_disj_rule)
   apply simp
@@ -2836,7 +2836,7 @@ apply simp
     subgoal premises prems3
     apply(rule conjI)
     apply(insert prems3(1,2))[1]
-      apply(rule weak_previous_LS5)
+      apply(rule weak_previous_L5)
       apply simp
         apply(rule dual_since_L5)
         apply simp
@@ -2857,15 +2857,15 @@ apply simp
         apply(insert prems5(1,2))[1]
           apply(rule always_imp_refl)
         apply(insert prems5(1,3))
-          apply(rule weak_until_einv2req)
+          apply(rule weak_until_L3)
           apply simp
             apply(erule conjE)
             subgoal premises prems6
             apply(rule conjI)
             apply(insert prems6(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems6(1,3))
-              apply assumption
+              apply simp
             done
         done
     done
@@ -2932,13 +2932,13 @@ apply(erule P1_2_inv_saving_gen)
       subgoal premises prems3
       apply(rule conjI)
       apply(insert prems3(1,2))[1]
-        apply assumption
+        apply simp
       apply(insert prems3(1,3))
         apply(erule conjE)
         subgoal premises prems4
         apply(rule conjI)
         apply(insert prems4(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems4(1,3))
           apply(erule conjE)
           subgoal premises prems5
@@ -2958,17 +2958,17 @@ apply(erule P1_2_inv_saving_gen)
                 apply(insert prems7(1,2))[1]
                   apply(rule always_imp_refl)
                 apply(insert prems7(1,3))
-                  apply(rule constrained_always_rule)
+                  apply(rule constrained_always_L1)
                   apply simp
                     apply(erule disjE)
                     apply(rule disjI1)
-                      apply assumption
+                      apply simp
                     apply(rule disjI2)
                       apply(erule conjE)
                       subgoal premises prems8
                       apply(rule conjI)
                       apply(insert prems8(1,2))[1]
-                        apply assumption
+                        apply simp
                       apply(insert prems8(1,3))
                         apply(erule conjE)
                         subgoal premises prems9
@@ -2976,18 +2976,18 @@ apply(erule P1_2_inv_saving_gen)
                         apply(insert prems9(1,2))[1]
                           apply(erule disjE)
                           apply(rule disjI1)
-                            apply assumption
+                            apply simp
                           apply(rule disjI2)
-                            apply assumption
+                            apply simp
                         apply(insert prems9(1,3))
-                          apply assumption
+                          apply simp
                         done
                       done
                 done
             apply(insert prems6(1,3))
               apply(erule disjE)
               apply(rule disjI1)
-                apply assumption
+                apply simp
               apply(rule disjI2)
                 apply(erule disjE)
                 apply(rule disjI1)
@@ -2999,34 +2999,34 @@ apply(erule P1_2_inv_saving_gen)
                     subgoal premises prems11
                     apply(rule conjI)
                     apply(insert prems11(1,2))[1]
-                      apply assumption
+                      apply simp
                     apply(insert prems11(1,3))
-                      apply(rule constrained_always_one_point)
+                      apply(rule constrained_always_L2)
                       apply simp
                         apply(erule disjE)
                         apply(rule disjI1)
-                          apply assumption
+                          apply simp
                         apply(rule disjI2)
                           apply(erule conjE)
                           subgoal premises prems12
                           apply(rule conjI)
                           apply(insert prems12(1,2))[1]
-                            apply assumption
+                            apply simp
                           apply(insert prems12(1,3))
-                            apply assumption
+                            apply simp
                           done
                     done
                   apply(insert prems10(1,3))
-                    apply assumption
+                    apply simp
                   done
                 apply(rule disjI2)
                   apply(erule conjE)
                   subgoal premises prems13
                   apply(rule conjI)
                   apply(insert prems13(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems13(1,3))
-                    apply assumption
+                    apply simp
                   done
             done
           done
@@ -3039,14 +3039,14 @@ apply(erule P1_2_inv_saving_gen)
         subgoal premises prems14
         apply(rule conjI)
         apply(insert prems14(1,2))[1]
-          apply assumption
+          apply simp
         apply(insert prems14(1,3))
-          apply assumption
+          apply simp
         done
       apply(rule disjI2)
         apply(erule disjE)
         apply(rule disjI1)
-          apply assumption
+          apply simp
         apply(rule disjI2)
           apply(erule disjE)
           apply(rule disjI1)
@@ -3054,21 +3054,21 @@ apply(erule P1_2_inv_saving_gen)
             subgoal premises prems15
             apply(rule conjI)
             apply(insert prems15(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems15(1,3))
-              apply(rule constrained_always_one_point)
+              apply(rule constrained_always_L2)
               apply simp
                 apply(erule disjE)
                 apply(rule disjI1)
-                  apply assumption
+                  apply simp
                 apply(rule disjI2)
                   apply(erule conjE)
                   subgoal premises prems16
                   apply(rule conjI)
                   apply(insert prems16(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems16(1,3))
-                    apply assumption
+                    apply simp
                   done
             done
           apply(rule disjI2)
@@ -3076,9 +3076,9 @@ apply(erule P1_2_inv_saving_gen)
             subgoal premises prems17
             apply(rule conjI)
             apply(insert prems17(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems17(1,3))
-              apply assumption
+              apply simp
             done
     done
   apply(insert prems1(1,3))
@@ -3087,7 +3087,7 @@ apply(erule P1_2_inv_saving_gen)
     apply assumption
     subgoal premises prems18
     apply(insert prems18(1,3))
-      apply assumption
+      apply simp
     done
   done
 done
@@ -3105,13 +3105,13 @@ apply simp
   subgoal premises prems3
   apply(rule conjI)
   apply(insert prems3(1,2))[1]
-    apply assumption
+    apply simp
   apply(insert prems3(1,3))
     apply(erule conjE)
     subgoal premises prems4
     apply(rule conjI)
     apply(insert prems4(1,2))[1]
-      apply assumption
+      apply simp
     apply(insert prems4(1,3))
       apply(erule conjE)
       subgoal premises prems5
@@ -3131,12 +3131,12 @@ apply simp
             apply(insert prems7(1,2))[1]
               apply(rule always_imp_refl)
             apply(insert prems7(1,3))
-              apply(rule constrained_always_einv2req)
+              apply(rule constrained_always_L3)
               apply simp
-                apply assumption
+                apply simp
             done
         apply(insert prems6(1,3))
-          apply assumption
+          apply simp
         done
       done
     done
@@ -3215,9 +3215,9 @@ apply(erule P3_4_inv_saving_gen)
           subgoal premises prems6
           apply(rule conjI)
           apply(insert prems6(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems6(1,3))
-            apply assumption
+            apply simp
           done
         apply(insert prems5(1,3))
           apply(erule conjE)
@@ -3244,7 +3244,7 @@ apply(erule P3_4_inv_saving_gen)
                     apply(insert prems10(1,2))[1]
                       apply(rule always_imp_refl)
                     apply(insert prems10(1,3))
-                      apply assumption
+                      apply simp
                     done
                 apply(insert prems9(1,3))
                   apply(rule always_conj_rule)
@@ -3253,17 +3253,17 @@ apply(erule P3_4_inv_saving_gen)
                     subgoal premises prems11
                     apply(rule conjI)
                     apply(insert prems11(1,2))[1]
-                      apply(rule previous_LS4)
+                      apply(rule previous_L4)
                       apply simp
-                        apply assumption
+                        apply simp
                     apply(insert prems11(1,3))
-                      apply assumption
+                      apply simp
                     done
                 done
             apply(insert prems8(1,3))
               apply(erule disjE)
               apply(rule disjI1)
-                apply assumption
+                apply simp
               apply(rule disjI2)
                 apply(erule disjE)
                 apply(rule disjI1)
@@ -3273,36 +3273,36 @@ apply(erule P3_4_inv_saving_gen)
                     subgoal premises prems12
                     apply(rule conjI)
                     apply(insert prems12(1,2))[1]
-                      apply assumption
+                      apply simp
                     apply(insert prems12(1,3))
-                      apply assumption
+                      apply simp
                     done
                   apply(rule disjI2)
                     apply(erule conjE)
                     subgoal premises prems13
                     apply(rule conjI)
                     apply(insert prems13(1,2))[1]
-                      apply(rule previous_one_point[OF prems1(3)])
+                      apply(rule previous_L7[OF prems1(3)])
                       apply simp
                         apply(erule conjE)
                         subgoal premises prems14
                         apply(rule conjI)
                         apply(insert prems14(1,2))[1]
-                          apply assumption
+                          apply simp
                         apply(insert prems14(1,3))
-                          apply assumption
+                          apply simp
                         done
                     apply(insert prems13(1,3))
-                      apply assumption
+                      apply simp
                     done
                 apply(rule disjI2)
                   apply(erule conjE)
                   subgoal premises prems15
                   apply(rule conjI)
                   apply(insert prems15(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems15(1,3))
-                    apply assumption
+                    apply simp
                   done
             done
           done
@@ -3314,15 +3314,15 @@ apply(erule P3_4_inv_saving_gen)
           subgoal premises prems16
           apply(rule conjI)
           apply(insert prems16(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems16(1,3))
             apply(erule conjE)
             subgoal premises prems17
             apply(rule conjI)
             apply(insert prems17(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems17(1,3))
-              apply assumption
+              apply simp
             done
           done
         apply(rule disjI2)
@@ -3334,36 +3334,36 @@ apply(erule P3_4_inv_saving_gen)
               subgoal premises prems18
               apply(rule conjI)
               apply(insert prems18(1,2))[1]
-                apply assumption
+                apply simp
               apply(insert prems18(1,3))
-                apply assumption
+                apply simp
               done
             apply(rule disjI2)
               apply(erule conjE)
               subgoal premises prems19
               apply(rule conjI)
               apply(insert prems19(1,2))[1]
-                apply(rule previous_one_point[OF prems1(3)])
+                apply(rule previous_L7[OF prems1(3)])
                 apply simp
                   apply(erule conjE)
                   subgoal premises prems20
                   apply(rule conjI)
                   apply(insert prems20(1,2))[1]
-                    apply assumption
+                    apply simp
                   apply(insert prems20(1,3))
-                    apply assumption
+                    apply simp
                   done
               apply(insert prems19(1,3))
-                apply assumption
+                apply simp
               done
           apply(rule disjI2)
             apply(erule conjE)
             subgoal premises prems21
             apply(rule conjI)
             apply(insert prems21(1,2))[1]
-              apply assumption
+              apply simp
             apply(insert prems21(1,3))
-              apply assumption
+              apply simp
             done
       done
     apply(insert prems3(1,3))
@@ -3378,12 +3378,12 @@ apply(erule P3_4_inv_saving_gen)
           subgoal premises prems23
           apply(rule conjI)
           apply(insert prems23(1,2))[1]
-            apply assumption
+            apply simp
           apply(insert prems23(1,3))
-            apply assumption
+            apply simp
           done
         apply(rule disjI2)
-          apply assumption
+          apply simp
       done
     done
   apply(insert prems2(1,3))
@@ -3392,18 +3392,18 @@ apply(erule P3_4_inv_saving_gen)
     apply assumption
     subgoal premises prems24
     apply(insert prems24(1,3))
-      apply assumption
+      apply simp
     done
   done
 apply(insert prems1(1,3,5))
-  apply(erule previous_rule)
+  apply(erule previous_inv_L6)
   apply simp
   apply(rule impI)
   apply(erule impE)
   apply assumption
   subgoal premises prems25
   apply(insert prems25(1,3))
-    apply assumption
+    apply simp
   done
 done
 done
@@ -3430,9 +3430,9 @@ apply simp
     subgoal premises prems4
     apply(rule conjI)
     apply(insert prems4(1,2))[1]
-      apply assumption
+      apply simp
     apply(insert prems4(1,3))
-      apply assumption
+      apply simp
     done
   apply(insert prems3(1,3))
     apply(erule conjE)
@@ -3455,7 +3455,7 @@ apply simp
             apply(insert prems7(1,2))[1]
               apply(rule always_imp_refl)
             apply(insert prems7(1,3))
-              apply assumption
+              apply simp
             done
         apply(insert prems6(1,3))
           apply(rule always_conj_rule)
@@ -3464,11 +3464,11 @@ apply simp
             subgoal premises prems8
             apply(rule conjI)
             apply(insert prems8(1,2))[1]
-              apply(rule previous_LS5)
+              apply(rule previous_L5)
               apply simp
-                apply assumption
+                apply simp
             apply(insert prems8(1,3))
-              apply assumption
+              apply simp
             done
         done
     done

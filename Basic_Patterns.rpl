@@ -1,7 +1,7 @@
-futurereq pattern constrained_until(const: t formulas: A1, A2) with constrained_until_inv;
-futureeinv pattern constrained_until_inv(const: t fun: t1 formulas: A1, A2)
+futurereq pattern constrained_until0(const: t formulas: A1, A2) with constrained_until0_inv;
+futureeinv pattern constrained_until0_inv(const: t fun: t1 formulas: A1, A2)
 lemmas {
-	LS1 lemma constrained_until_rule {
+	LS1 lemma constrained_until0_L1 {
 		const: t
 		fun: t1
 		extra invariant formulas: A1_1, A2_1
@@ -10,7 +10,7 @@ lemmas {
 		premise alwaysimp(s0, A1_1(s0), A1_1(s)) /\ alwaysimp(s0, A2_1(s0), A2_1(s)) /\
 		(frm(t1(s0) = 0) \/ A2_1(s, s) /\ frm(t1(s0) <= t) \/ A1_1(s, s) /\ frm(t1(s0) < t1(s)))
 	};
-	LS3 lemma constrained_until_einv2req {
+	LS3 lemma constrained_until0_L3 {
 		const: t
 		fun: t1
 		extra invariant formulas: A1_1, A2_1
@@ -18,7 +18,7 @@ lemmas {
 		final state: s
 		premise alwaysimp(s, A1_1(s), A1(s)) /\ alwaysimp(s, A2_1(s), A2(s)) /\ frm(t1(s) <= t)
 	};
-	LS2 lemma constrained_until_one_point {
+	LS2 lemma constrained_until0_L2 {
 		const: t
 		fun: t1
 		extra invariant formulas: A1_1, A2_1
@@ -27,10 +27,10 @@ lemmas {
 	};
 };
 
-futurereq pattern constrained_until2(const: t1, t2 formulas: A1, A2) with constrained_until2_inv;
-futureeinv pattern constrained_until2_inv(const: t1, t2 fun: t1_1, t2_1 formulas: A1, A2)
+futurereq pattern constrained_until(const: t1, t2 formulas: A1, A2) with constrained_until_inv;
+futureeinv pattern constrained_until_inv(const: t1, t2 fun: t1_1, t2_1 formulas: A1, A2)
 lemmas {
-	LS1 lemma constrained_until2_rule {
+	LS1 lemma constrained_until_L1 {
 		const: t1, t2
 		fun: t1_1, t2_1
 		extra invariant formulas: A1_1, A2_1
@@ -41,7 +41,7 @@ lemmas {
 			A1_1(s, s) /\ frm(t1_1(s0) + 1 >= t1_1(s)) /\ frm(t2_1(s0) < t2_1(s))
 		)
 	};
-	LS3 lemma constrained_until2_einv2req {
+	LS3 lemma constrained_until_L3 {
 		const: t1, t2
 		fun: t1_1, t2_1
 		extra invariant formulas: A1_1, A2_1
@@ -49,7 +49,7 @@ lemmas {
 		final state: s
 		premise alwaysimp(s, A1_1(s), A1(s)) /\ alwaysimp(s, A2_1(s), A2(s)) /\ frm(t2_1(s) <= t2)
 	};
-	LS2 lemma constrained_until2_one_point {
+	LS2 lemma constrained_until_L2 {
 		const: t1, t2
 		fun: t1_1, t2_1
 		extra invariant formulas: A1_1, A2_1
@@ -61,7 +61,7 @@ lemmas {
 futurereq pattern constrained_always(const: t formulas: A) with constrained_always_inv;
 futureeinv pattern constrained_always_inv(const: t fun: t1 formulas: A_1)
 lemmas {
-	LS1 lemma constrained_always_rule {
+	LS1 lemma constrained_always_L1 {
 		const: t
 		fun: t1
 		extra invariant formulas: A_1
@@ -69,14 +69,14 @@ lemmas {
 		final state: s
 		premise frm(t = 0) \/ alwaysimp(s0, A_1(s0), A_1(s)) /\ (frm(t1(s0) + 1 >= t) \/ A_1(s, s)) /\ frm(t1(s) <= t1(s0) + 1)
 	};
-	LS2 lemma constrained_always_one_point {
+	LS2 lemma constrained_always_L2 {
 		const: t
 		fun: t1
 		extra invariant formulas: A_1
 		final state: s
 		premise frm(t = 0) \/ frm(t1(s) = 0) /\ A_1(s, s)
 	};
-	LS3 lemma constrained_always_einv2req {
+	LS3 lemma constrained_always_L3 {
 		const: t
 		fun: t1
 		extra invariant formulas: A_1
@@ -89,20 +89,20 @@ lemmas {
 futurereq pattern weak_until(formulas: A1, A2) with weak_until_inv;
 futureeinv pattern weak_until_inv(fun: w formulas: A1_1, A2_1)
 lemmas {
-	LS1 lemma weak_until_rule {
+	LS1 lemma weak_until_L1 {
 		fun: w
 		extra invariant formulas: A1_1, A2_1
 		init state: s0
 		final state: s
 		premise alwaysimp(s0, A1_1(s0), A1_1(s)) /\ alwaysimp(s0, A2_1(s0), A2_1(s)) /\ (~ frm(w(s0)) \/ A2_1(s, s) \/ frm(w(s)) /\ A1_1(s, s))
 	};
-	LS2 lemma weak_until_one_point {
+	LS2 lemma weak_until_L2 {
 		fun: w
 		extra invariant formulas: A1_1, A2_1
 		final state: s
 		premise A2_1(s,s) \/ frm(w(s)) /\ A1_1(s, s)
 	};
-	LS3 lemma weak_until_einv2req {
+	LS3 lemma weak_until_L3 {
 		fun: w
 		extra invariant formulas: A1_1, A2_1
 		requirement formulas: A1, A2
@@ -114,14 +114,14 @@ lemmas {
 futurereq pattern constrained_weak_until(const: t formulas: A1, A2) with constrained_weak_until_inv;
 futureeinv pattern constrained_weak_until_inv(const: t fun: t1 formulas: A1_1, A2_1)
 lemmas {
-	LS2 lemma constrained_weak_until_one_point {
+	LS2 lemma constrained_weak_until_L2 {
 		const: t
 		fun: t1
 		extra invariant formulas: A1_1, A2_1
 		final state: s
 		premise A2_1(s, s) \/ frm(t1(s) = 0) /\ A1_1(s, s)
 	};
-	LS1 lemma constrained_weak_until_rule {
+	LS1 lemma constrained_weak_until_L1 {
 		const: t
 		fun: t1
 		extra invariant formulas: A1_1, A2_1
@@ -132,7 +132,7 @@ lemmas {
 		 	frm(t1(s0) >= t /\ t1(s) <= t1(s0) + 1)
 		 )
 	};
-	LS3 lemma constrained_weak_until_einv2req {
+	LS3 lemma constrained_weak_until_L3 {
 		const: t
 		fun: t1
 		extra invariant formulas: A1_1, A2_1
@@ -146,13 +146,13 @@ lemmas {
 derivedreq pattern always(formulas: A) with always_inv;
 derivedeinv pattern always_inv(formulas: A_1)
 lemmas {
-	LS8 lemma always_rule {
+	LS8 lemma always_inv_saving_gen {
 		extra invariant formulas: A_1
 		init state: s0
 		final state: s
 		premise alwaysimp(s0, A_1(s0), A_1(s)) /\ A_1(s, s)
 	};
-	LS9 lemma always_einv2req {
+	LS9 lemma always_einv_imp_req_gen {
 		extra invariant formulas: A_1
 		requirement formulas: A
 		final state: s
@@ -178,20 +178,20 @@ lemmas {
 
 pastreq pattern previous(formulas: A) with previous_inv
 lemmas {
-	LS7 lemma previous_one_point {
+	LS7 lemma previous_L7 {
 		fun: b
 		extra invariant formulas: A_1
 		init state: s0
 		final state: s
 		premise frm(b(s0)) /\ alwaysimp(s0, A_1(s0), A_1(s))
 	};
-	LS4 lemma previous_LS4 {
+	LS4 lemma previous_L4 {
 		extra invariant formulas: A_1
 		init state: s0
 		final state: s
 		premise alwaysimp(s0, A_1(s0), A_1(s))
 	};
-	LS5 lemma previous_LS5 {
+	LS5 lemma previous_L5 {
 		extra invariant formulas: A_1
 		requirement formulas: A
 		final state: s
@@ -200,20 +200,20 @@ lemmas {
 };
 pastreq pattern weak_previous(formulas: A) with previous_inv
 lemmas {
-	LS7 lemma weak_previous_one_point {
+	LS7 lemma weak_previous_L7 {
 		fun: b
 		extra invariant formulas: A_1
 		init state: s0
 		final state: s
 		premise frm(b(s0)) /\ alwaysimp(s0, A_1(s0), A_1(s))
 	};
-	LS4 lemma weak_previous_LS4 {
+	LS4 lemma weak_previous_L4 {
 		extra invariant formulas: A_1
 		init state: s0
 		final state: s
 		premise alwaysimp(s0, A_1(s0), A_1(s))
 	};
-	LS5 lemma weak_previous_LS5 {
+	LS5 lemma weak_previous_L5 {
 		extra invariant formulas: A_1
 		requirement formulas: A
 		final state: s
@@ -222,7 +222,7 @@ lemmas {
 };
 pasteinv pattern previous_inv(fun: b formulas: A_1)
 lemmas {
-	LS6 lemma previous_rule {
+	LS6 lemma previous_inv_L6 {
 		fun: b
 		extra invariant formulas: A_1
 		init state: s0
@@ -234,7 +234,7 @@ lemmas {
 pastreq pattern since(const: t formulas: A1, A2) with since_inv;
 pasteinv pattern since_inv(const: t fun: b, t1 formulas: A_1, A_2)
 lemmas {
-	LS6 lemma since_one_point {
+	LS6 lemma since_L6 {
 		const: t
 		fun: b, t1
 		extra invariant formulas: A_1, A_2
@@ -269,7 +269,7 @@ lemmas {
 pastreq pattern dual_since(const: t formulas: A1, A2) with dual_since_inv;
 pasteinv pattern dual_since_inv(const: t fun: b, t1 formulas: A_1, A_2)
 lemmas {
-	LS6 lemma dual_since_one_point {
+	LS6 lemma dual_since_L6 {
 		const: t
 		fun: b, t1
 		extra invariant formulas: A_1, A_2
@@ -304,5 +304,161 @@ lemmas {
 		requirement formulas: A1, A2
 		final state: s
 		premise alwaysimp(s, A_1(s), A1(s)) /\ alwaysimp(s, A_2(s), A2(s))
+	};
+};
+
+pastreq pattern constrained_since(const: t1, t2 formulas: A1, A2) with constrained_since_inv;
+pasteinv pattern constrained_since_inv(const: t1, t2 fun: b, t1_1, t2_1 formulas: A1, A2)
+lemmas {
+	LS6 lemma constrained_since_L6 {
+		const: t1, t2
+		fun: b, t1_1, t2_1
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise b(s) --> frm(t1_1(s) = 0) /\ A2'(s, s) \/ 
+		frm(b(s)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ frm(t1_1(s) <= t1_1(s0) + 1 /\ t2_1(s0) < t2_1(s))
+		/\ A1'(s, s)
+	};
+	LS7 lemma constrained_since_L7 {
+		const: t1, t2
+		fun: b, t1_1, t2_1
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise frm(t1 = 0) /\ A2'(s, s) \/ 
+		frm(b(s)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ frm(t1 <= t1_1(s0) + 1 /\ t2_1(s0) < t2)
+		/\ A1'(s, s)
+	};
+	LS4 lemma constrained_since_L4 {
+		const: t1, t2
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s))
+	};
+	LS5 lemma constrained_since_L5 {
+		const: t1, t2
+		extra invariant formulas: A1', A2'
+		requirement formulas: A1, A2
+		final state: s
+		premise alwaysimp(s, A1'(s), A1(s)) /\ alwaysimp(s, A2'(s), A2(s))
+	};
+};
+
+pastreq pattern dual_constrained_since(const: t1, t2 formulas: A1, A2) with dual_constrained_since_inv;
+pasteinv pattern dual_constrained_since_inv(const: t1, t2 fun: b, t1_1, t2_1 formulas: A1, A2)
+lemmas {
+	LS6 lemma dual_constrained_since_L6 {
+		const: t1, t2
+		fun: t1_1, t2_1
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise b(s) --> (frm(t1_1(s) > 0) \/ A2'(s, s)) /\
+		(A1'(s, s) \/ 
+			frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ 
+			frm(t1_1(s0) < t1_1(s) /\ t2_1(s) <= t2_1(s0) + 1)
+		)
+	};
+	LS7 lemma dual_constrained_since_L7 {
+		const: t1, t2
+		fun: t1_1, t2_1
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise (frm(t1 > 0) \/ A2'(s, s)) /\
+		(A1'(s, s) \/ 
+			frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ 
+			frm(t1_1(s0) < t1 /\ t2 <= t2_1(s0) + 1)
+		)
+	};
+	LS4 lemma dual_constrained_since_L4 {
+		const: t1, t2
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s))
+	};
+	LS5 lemma dual_constrained_since_L5 {
+		const: t1, t2
+		extra invariant formulas: A1', A2'
+		requirement formulas: A1, A2
+		final state: s
+		premise alwaysimp(s, A1'(s), A1(s)) /\ alwaysimp(s, A2'(s), A2(s))
+	};
+};
+
+pastreq pattern constrained_since0(const: t formulas: A1, A2) with constrained_since0_inv;
+pasteinv pattern constrained_since0_inv(const: t fun: b, t1 formulas: A1, A2)
+lemmas {
+	LS6 lemma constrained_since0_L6 {
+		const: t
+		fun: b, t1
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise b(s) --> A2'(s, s) \/ 
+		frm(b(s)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ frm(t1(s0) < t1(s)) /\ A1'(s, s)
+	};
+	LS7 lemma constrained_since0_L7 {
+		const: t
+		fun: b, t1
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise A2'(s, s) \/ 
+		frm(b(s)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ frm(t1(s0) < t) /\ A1'(s, s)
+	};
+	LS4 lemma constrained_since0_L4 {
+		const: t
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s))
+	};
+	LS5 lemma constrained_since0_L5 {
+		const: t
+		extra invariant formulas: A1', A2'
+		requirement formulas: A1, A2
+		final state: s
+		premise alwaysimp(s, A1'(s), A1(s)) /\ alwaysimp(s, A2'(s), A2(s))
+	};
+};
+
+pastreq pattern dual_constrained_since0(const: t formulas: A1, A2) with dual_constrained_since0_inv;
+pasteinv pattern dual_constrained_since0_inv(const: t fun: b, t1 formulas: A1, A2)
+lemmas {
+	LS6 lemma dual_constrained_since0_L6 {
+		const: t
+		fun: t1
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise b(s) --> A2'(s, s) /\ 
+		(A1'(s, s) \/ frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ frm(t1(s) <= t1(s0) + 1))
+	};
+	LS7 lemma dual_constrained_since0_L7 {
+		const: t
+		fun: t1
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise A2'(s, s) /\ 
+		(A1'(s, s) \/ frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ frm(t <= t1(s0) + 1))
+	};
+	LS4 lemma dual_constrained_since0_L4 {
+		const: t
+		extra invariant formulas: A1', A2'
+		init state: s0
+		final state: s
+		premise alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s))
+	};
+	LS5 lemma dual_constrained_since0_L5 {
+		const: t
+		extra invariant formulas: A1', A2'
+		requirement formulas: A1, A2
+		final state: s
+		premise alwaysimp(s, A1'(s), A1(s)) /\ alwaysimp(s, A2'(s), A2(s))
 	};
 };

@@ -4,11 +4,11 @@ derivedreq pattern always2(simple formulas: A11, A12 formulas: A2) =
 always(formulas: lambda r2 r1. weak_previous(formulas: lambda r4 r3. ~A11(r3) final: r2 current: r1) \/ ~A12(r1) \/ A2(r2, r1));
 
 derivedreq pattern P1_1(const : t simple formulas : A1 formulas : A2, A3) = always(formulas : lambda r2 r1. 
-	~A1(r1) \/ constrained_until(const : t formulas : A2, A3 final : r2 current : r1)
+	~A1(r1) \/ constrained_until0(const : t formulas : A2, A3 final : r2 current : r1)
 );
 
 derivedreq pattern P1_2(const : t simple formulas : A11, A12 formulas : A2, A3) = always(formulas : lambda r2 r1. 
-	weak_previous(formulas: lambda r4 r3. ~ A11(r3) final: r2 current: r1) \/ ~ A12(r1) \/ constrained_until(const : t formulas : A2, A3 final : r2 current : r1)
+	weak_previous(formulas: lambda r4 r3. ~ A11(r3) final: r2 current: r1) \/ ~ A12(r1) \/ constrained_until0(const : t formulas : A2, A3 final : r2 current : r1)
 );
 
 derivedreq pattern P2_1(const : t simple formulas : A1 formulas : A2) = always(formulas : lambda r2 r1. 
@@ -75,8 +75,7 @@ derivedreq pattern P_constrained_always_after_max_delay(const: t1, t2 simple for
 = P1_2(const: t1 simple formulas: A11, A12 formulas: lambda r2 r1. ~A2(r1), 
 	lambda r2 r1. A2(r1) /\ constrained_always(const: t2 formulas: A3 final: r2 current: r1));
 	
+
 derivedreq pattern P5(simple formulas: A11, A12, A2 formulas: A31, A32, A4)
 = P3_4(simple formulas: A11, A12 formulas: lambda r2 r1. ~A2(r1), lambda r2 r1. A2(r1) /\ A4(r2, r1) \/
-	previous(formulas: A31 final: r2 current: r1) /\ A32(r2, r1)
-);
-	
+	previous(formulas: A31 final: r2 current: r1) /\ A32(r2, r1));

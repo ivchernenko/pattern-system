@@ -1,0 +1,50 @@
+import "Basic_Patterns.rpl";
+
+derivedreq pattern EDTL_delay_true(simple formulas: trigger, fin formulas: release, Inv, reaction) =
+  always(formulas: lambda r2 r1. ~ trigger(r1) \/ release(r2, r1) 
+  	\/ weak_until(formulas: lambda r4 r3. Inv(r4, r3) /\ ~ fin(r3), lambda r4 r3. release(r4, r3) \/ fin(r3) /\ reaction(r4, r3) /\ Inv(r4, r3) final: r2 current: r1)
+  );
+  
+derivedreq pattern EDTL_trigger_prev_delay_true(simple formulas: trigger, fin formulas: release, Inv, reaction) =
+  always(formulas: lambda r2 r1. weak_previous(formulas: lambda r4 r3. ~ trigger(r3) final: r2 current: r1) \/ release(r2, r1) 
+  	\/ weak_until(formulas: lambda r4 r3. Inv(r4, r3) /\ ~ fin(r3), lambda r4 r3. release(r4, r3) \/ fin(r3) /\ reaction(r4, r3) /\ Inv(r4, r3) final: r2 current: r1)
+  );
+
+derivedreq pattern EDTL_final_nontemporal_or_tau_delay_true(const: finalt simple formulas: trigger, finale formulas: release, Inv, reaction) =
+  always(formulas: lambda r2 r1. ~ trigger(r1) \/ release(r2, r1) 
+  	\/ constrained_until(const: finalt formulas: lambda r4 r3. Inv(r4, r3) /\ ~ finale(r3), lambda r4 r3. release(r4, r3) \/ finale(r3) /\ reaction(r4, r3) /\ Inv(r4, r3) 
+  		final: r2 current: r1
+  	)
+  	\/ constrained_until2(const: finalt, finalt formulas: lambda r4 r3. Inv(r4, r3) /\ ~ finale(r3), lambda r4 r3. reaction(r4, r3) /\ Inv(r4, r3) final: r2 current: r1)
+  );
+  
+derivedreq pattern EDTL_final_prev_delay_true(simple formulas: trigger, fin formulas: release, Inv, reaction) =
+  always(formulas: lambda r2 r1. ~ trigger(r1) \/ release(r2, r1) 
+  	\/ weak_until(formulas:
+  		 lambda r4 r3. Inv(r4, r3) /\ weak_previous(formulas: lambda r6 r5. ~ fin(r5) final: r4 current: r3),
+  		lambda r4 r3. release(r4, r3) \/ previous(formulas: lambda r6 r5. fin(r5) final: r4 current: r3) /\ reaction(r4, r3) /\ Inv(r4, r3) final: r2 current: r1
+  	)
+  );
+  
+derivedreq pattern EDTL_trigger_prev_final_prev_delay_true(simple formulas: trigger, fin formulas: release, Inv, reaction) =
+  always(formulas: lambda r2 r1. weak_previous(formulas: lambda r4 r3. ~ trigger(r3) final: r2 current: r1) \/ release(r2, r1) 
+  	\/ weak_until(formulas:
+  		 lambda r4 r3. Inv(r4, r3) /\ weak_previous(formulas: lambda r6 r5. ~ fin(r5) final: r4 current: r3),
+  		lambda r4 r3. release(r4, r3) \/ previous(formulas: lambda r6 r5. fin(r5) final: r4 current: r3) /\ reaction(r4, r3) /\ Inv(r4, r3) final: r2 current: r1
+  	)
+  );
+  
+  
+derivedreq pattern EDTL_trigger_prev_final_nontemporal_or_tau_delay_true(const: finalt simple formulas: trigger, finale formulas: release, Inv, reaction) =
+  always(formulas: lambda r2 r1. weak_previous(formulas: lambda r4 r3. ~ trigger(r3) final: r2 current: r1) \/ release(r2, r1) 
+  	\/ constrained_until(const: finalt formulas: lambda r4 r3. Inv(r4, r3) /\ ~ finale(r3), lambda r4 r3. release(r4, r3) \/ finale(r3) /\ reaction(r4, r3) /\ Inv(r4, r3) 
+  		final: r2 current: r1
+  	)
+  	\/ constrained_until2(const: finalt, finalt formulas: lambda r4 r3. Inv(r4, r3) /\ ~ finale(r3), lambda r4 r3. reaction(r4, r3) /\ Inv(r4, r3) final: r2 current: r1)
+  );
+  
+derivedreq pattern EDTL_release_false_final_tau_delay_tau(const: fin, delay simple formulas: trigger formulas: Inv, reaction) =
+  always(formulas: lambda r2 r1. ~ trigger(r1) \/ constrained_until2(const: fin, fin + delay formulas: Inv, lambda r4 r3. reaction(r4, r3) /\ Inv(r4, r3) final: r2 current: r1));
+  
+derivedreq pattern EDTL_trigger_prev_release_false_final_tau_delay_tau(const: fin, delay simple formulas: trigger formulas: Inv, reaction) =
+  always(formulas: lambda r2 r1. weak_previous(formulas: lambda r4 r3. ~trigger(r3) final: r2 current: r1) \/ constrained_until2(const: fin, fin + delay formulas: Inv, lambda r4 r3. reaction(r4, r3) /\ Inv(r4, r3) final: r2 current: r1));

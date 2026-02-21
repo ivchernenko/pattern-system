@@ -1,5 +1,5 @@
 theory Constrained_Weak_Until
-  imports Previous
+  imports RequirementLemmas
 begin
 
 definition constrained_weak_until where "constrained_weak_until t A1 A2 s s1 \<equiv>
@@ -13,12 +13,7 @@ definition constrained_weak_until_inv where "constrained_weak_until_inv t t1 A1 
 toEnvNum s1 s \<ge> t1 s \<and>
 (\<forall> s3. toEnvP s3 \<and> s1 \<le> s3 \<and> s3 \<le> s \<and> toEnvNum s1 s3 \<le> t \<longrightarrow> A1 s s3)"
 
-lemma constrained_weak_until_one_point[patternintro]: "toEnvP s \<Longrightarrow> A2 s s \<or> t1 s = 0 \<and> A1 s s \<Longrightarrow>
- constrained_weak_until_inv t t1 A1 A2 s s"
-  unfolding constrained_weak_until_inv_def less_eq_state.simps less_state.simps
-  by (metis substate_antisym substate_refl toEnvNum_id zero_le)
-
-lemma constrained_weak_until_rule[patternintro]: " consecutive s0 s \<Longrightarrow>
+lemma constrained_weak_until_L1: " consecutive s0 s \<Longrightarrow>
 always_imp s0 (A1' s0) (A1' s) \<and>
 always_imp s0 (A2' s0) (A2' s)  \<and>
 (t1 s0 < t \<and> (A2' s s \<and>  t1 s \<le> t+1  \<or>  t1 s \<le> t1 s0 + 1 \<and> A1' s s) \<or> t1 s0 \<ge> t \<and> t1 s \<le> t1 s0 + 1) \<Longrightarrow>
@@ -57,7 +52,12 @@ always_imp s0 (constrained_weak_until_inv t t1 A1' A2' s0) (constrained_weak_unt
     by (metis consecutive.elims(2) dual_order.trans leD less_add_one substate_noteq_imp_substate_of_pred toEnvNum3)
   done
 
-lemma constrained_weak_until_einv2req[patternintro]: "
+lemma constrained_weak_until_L2: "toEnvP s \<Longrightarrow> A2 s s \<or> t1 s = 0 \<and> A1 s s \<Longrightarrow>
+ constrained_weak_until_inv t t1 A1 A2 s s"
+  unfolding constrained_weak_until_inv_def less_eq_state.simps less_state.simps
+  by (metis substate_antisym substate_refl toEnvNum_id zero_le)
+
+lemma constrained_weak_until_L3: "
 toEnvP s \<Longrightarrow>
 always_imp s (A1' s) (A1 s) \<and>
 always_imp s (A2' s) (A2 s) \<Longrightarrow>
