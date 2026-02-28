@@ -43,10 +43,6 @@ lemma external_ltime[simp]: "toEnvP s \<Longrightarrow> ltime s p > 0"
   apply(cases s)
   by auto
 
-lemma external_ltime2[simp]: "toEnvP s \<Longrightarrow> ltime s p \<ge> Suc 0"
-  apply(cases s)
-  by auto
-
 lemma toEnvNum_eq_imp_eq2: "substate s1 s3 \<and> substate s2 s3 \<and> toEnvP s1 \<and> toEnvP s2 \<and> toEnvNum s1 s3 = toEnvNum s2 s3 \<Longrightarrow>
 s1=s2"
   using substate_linear toEnvNum3 substate_toEnvNum_id
@@ -54,6 +50,11 @@ s1=s2"
 
 lemma  substate_noteq_imp_substate_of_pred: "toEnvP s1 \<and> toEnvP s0 \<and> toEnvP s \<and> substate s0 s \<and> toEnvNum s0 s = 1 \<and> substate s1 s \<and>  s1 \<noteq> s \<longrightarrow> substate s1 s0"
   by (metis (full_types) One_nat_def add_is_1 substate_linear substate_toEnvNum_id toEnvNum3) 
+
+lemma toEnvP_imp_toEnvNum_geq_1: "toEnvP s \<Longrightarrow> toEnvNum emptyState s \<ge> 1"
+  apply(cases s)
+           apply auto
+  done
 
 instantiation state :: order
 begin

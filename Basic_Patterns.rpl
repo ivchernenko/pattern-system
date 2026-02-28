@@ -137,7 +137,6 @@ lemmas {
 		fun: t1
 		extra invariant formulas: A1_1, A2_1
 		requirement formulas: A1, A2
-		init state:s0
 		final state: s
 		premise alwaysimp(s, A1_1(s), A1(s)) /\ alwaysimp(s, A2_1(s), A2(s))
 	};
@@ -351,7 +350,7 @@ pasteinv pattern dual_constrained_since_inv(const: t1, t2 fun: b, t1_1, t2_1 for
 lemmas {
 	LS6 lemma dual_constrained_since_L6 {
 		const: t1, t2
-		fun: t1_1, t2_1
+		fun: b, t1_1, t2_1
 		extra invariant formulas: A1', A2'
 		init state: s0
 		final state: s
@@ -363,7 +362,7 @@ lemmas {
 	};
 	LS7 lemma dual_constrained_since_L7 {
 		const: t1, t2
-		fun: t1_1, t2_1
+		fun: b, t1_1, t2_1
 		extra invariant formulas: A1', A2'
 		init state: s0
 		final state: s
@@ -431,7 +430,7 @@ pasteinv pattern dual_constrained_since0_inv(const: t fun: b, t1 formulas: A1, A
 lemmas {
 	LS6 lemma dual_constrained_since0_L6 {
 		const: t
-		fun: t1
+		fun: b, t1
 		extra invariant formulas: A1', A2'
 		init state: s0
 		final state: s
@@ -440,7 +439,7 @@ lemmas {
 	};
 	LS7 lemma dual_constrained_since0_L7 {
 		const: t
-		fun: t1
+		fun: b, t1
 		extra invariant formulas: A1', A2'
 		init state: s0
 		final state: s

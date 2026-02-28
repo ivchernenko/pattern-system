@@ -1,5 +1,5 @@
 theory RequirementLemmas
-  imports VCTheoryLemmas  "HOL-Eisbach.Eisbach" "HOL-Eisbach.Eisbach_Tools"
+  imports VCTheoryLemmas
 begin
 
 definition always_imp where "always_imp s A A' \<equiv> \<forall> s1. toEnvP s1 \<and> s1 \<le> s \<and> A s1 \<longrightarrow> A' s1"
