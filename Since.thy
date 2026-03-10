@@ -54,7 +54,7 @@ always_imp s (since t A1' A2' s) (since t A1 A2 s)"
 
 lemma dual_since_L6: "dual_since_inv t b t1 A1' A2' s \<Longrightarrow> consecutive s s' \<Longrightarrow>
 b s' \<longrightarrow>(t1 s' > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> b s \<and> always_imp s (A1' s) (A1' s') \<and>
-always_imp s (A2' s) (A2' s') \<and> (t1 s = 0 \<and> A2' s' s' \<or> t1 s < t1 s')) \<Longrightarrow>
+always_imp s (A2' s) (A2' s') \<and> (t1 s = 0 \<or> t1 s < t1 s')) \<Longrightarrow>
 dual_since_inv t b  t1 A1' A2' s' "
   unfolding dual_since_inv_def dual_since_def always_imp_def less_state.simps less_eq_state.simps
   apply(rule impI)
@@ -102,7 +102,7 @@ apply(rule allI)
 
 lemma dual_since_L7: " dual_since_inv t b t1 A1' A2' s \<Longrightarrow> consecutive s s' \<Longrightarrow>
 (t > 0 \<or> A2' s' s') \<and> (A1' s' s' \<or> b s \<and> always_imp s (A1' s) (A1' s') \<and>
-always_imp s (A2' s) (A2' s') \<and>  (t1 s = 0 \<and> A2' s' s' \<or> t1 s < t)) \<Longrightarrow>
+always_imp s (A2' s) (A2' s') \<and>  (t1 s = 0 \<or> t1 s < t)) \<Longrightarrow>
 dual_since t A1' A2' s' s' "
   unfolding dual_since_inv_def dual_since_def always_imp_def less_state.simps less_eq_state.simps
   apply(rule allI)

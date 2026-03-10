@@ -37,4 +37,13 @@ lemmas always_inv_used_patterns = always_inv_def
 lemmas always_part_used_patterns = always_part_def always_def
 lemmas always_inv_part_used_patterns = always_inv_part_def always_inv_def
 
+lemma always_rec_def: "consecutive s s' \<Longrightarrow> always_part A s' \<longleftrightarrow> always_inv_part A s \<and> A s'"
+  unfolding always_part_used_patterns always_inv_part_used_patterns
+  apply(rule iffI)
+   apply(rule conjI)
+  apply simp
+  using substate_trans apply blast
+   apply simp
+  by (metis always_inv_part_def always_inv_saving always_inv_used_patterns)
+
 end

@@ -18,16 +18,6 @@ definition dual_constrained_since0 where "dual_constrained_since0 t1 A1 A2 (s::s
 (\<forall> r1. toEnvP r1 \<and> r1 \<le> s1 \<and> toEnvNum r1 s1 \<le> t1 \<longrightarrow> A2 s r1 \<or>
   (\<exists> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s1 \<and> A1 s r2))"
 
-definition constrained_since_inv where "constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s \<equiv>
-b s \<longrightarrow>
-(\<exists> r1. toEnvP r1 \<and> r1 \<le> s \<and> toEnvNum r1 s \<ge> t1_1 s \<and> toEnvNum r1 s \<le> t2_1 s \<and> A2 s r1 \<and>
-  (\<forall> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s \<longrightarrow> A1 s r2))"
-
-definition dual_constrained_since_inv where "dual_constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s \<equiv>
-b s \<longrightarrow>
-(\<forall> r1. toEnvP r1 \<and> r1 \<le> s \<and> toEnvNum r1 s \<ge> t1_1 s \<and> toEnvNum r1 s \<le> t2_1 s \<longrightarrow> A2 s r1 \<or>
-  (\<exists> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s \<and> A1 s r2))"
-
 definition constrained_since0_inv where "constrained_since0_inv t b t1 A1 A2 s \<equiv>
 b s \<longrightarrow>
 (\<exists> r1. toEnvP r1 \<and> r1 \<le> s \<and> toEnvNum r1 s \<le> t1 s \<and> A2 s r1 \<and>
@@ -37,6 +27,11 @@ definition dual_constrained_since0_inv where "dual_constrained_since0_inv t b t1
 b s \<longrightarrow>
 (\<forall> r1. toEnvP r1 \<and> r1 \<le> s \<and> toEnvNum r1 s \<le> t1 s \<longrightarrow> A2 s r1 \<or>
   (\<exists> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s \<and> A1 s r2))"
+
+definition constrained_since_inv where "constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s \<equiv>
+b s \<longrightarrow>
+(\<exists> r1. toEnvP r1 \<and> r1 \<le> s \<and> toEnvNum r1 s \<ge> t1_1 s \<and> toEnvNum r1 s \<le> t2_1 s \<and> A2 s r1 \<and>
+  (\<forall> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s \<longrightarrow> A1 s r2))"
 
 lemma constrained_since_L6: 
 "constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s \<Longrightarrow>
@@ -61,12 +56,17 @@ constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s'"
           order_subst1 substate_noteq_imp_substate_of_pred substate_trans toEnvNum3 verit_comp_simplify1(3))
     done
 
+definition dual_constrained_since_inv where "dual_constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s \<equiv>
+b s \<longrightarrow>
+(\<forall> r1. toEnvP r1 \<and> r1 \<le> s \<and> toEnvNum r1 s \<ge> t1_1 s \<and> toEnvNum r1 s \<le> t2_1 s \<longrightarrow> A2 s r1 \<or>
+  (\<exists> r2. toEnvP r2 \<and> r1 < r2 \<and> r2 \<le> s \<and> A1 s r2))"
+
 lemma dual_constrained_since_L6: 
 "dual_constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s \<Longrightarrow>
  consecutive s s' \<Longrightarrow>
-b s' \<longrightarrow> (t1_1 s' > 0 \<or> A2 s' s') \<and>
- (A1 s' s' \<or>
-   b s \<and> always_imp s (A1 s) (A1 s') \<and> always_imp s (A2 s) (A2 s') \<and>t1_1 s < t1_1 s' \<and> t2_1 s' \<le> t2_1 s + 1)
+b s' \<longrightarrow> t1_1 s' > t2_1 s' \<or> (t1_1 s' > 0 \<or> A2 s' s') \<and>
+ (A1 s' s' \<or> t2_1 s' = 0 \<or>
+   b s \<and> always_imp s (A1 s) (A1 s') \<and> always_imp s (A2 s) (A2 s') \<and> (t1_1 s = 0 \<or> t1_1 s < t1_1 s') \<and> t2_1 s' \<le> t2_1 s + 1)
  \<Longrightarrow>
 dual_constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s'"
   unfolding dual_constrained_since_inv_def always_imp_def less_state.simps less_eq_state.simps
@@ -74,6 +74,8 @@ dual_constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s'"
   apply(rotate_tac 2)
   apply(erule impE)
    apply assumption
+  apply(erule disjE)
+   apply auto[1]
   apply(rule allI)
   subgoal for r1
     apply(cases "r1 = s'")
@@ -83,14 +85,16 @@ dual_constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s'"
     apply(erule conjE)
      apply(rotate_tac -1)
     apply(erule disjE)
-    apply simp
+      apply simp
     using substate_refl apply blast
+     apply(rotate_tac -1)
+     apply(erule disjE)
+      apply (simp add: substate_toEnvNum_id)
      apply(erule impE)
       apply simp
-     apply(rotate_tac -1)
      apply(erule allE[of _ r1])
-    apply (smt (verit, best) add_le_cancel_right consecutive.simps le_iff_add le_trans less_inc_imp_less_eq substate_trans
-        toEnvNum3 trans_less_add1)
+    apply (smt (verit) add_le_cancel_right consecutive.simps le_eq_less_or_eq le_trans less_inc_imp_less_eq not_gr_zero
+        substate_trans toEnvNum3)
     apply simp
     using  substate_noteq_imp_substate_of_pred
     by (metis One_nat_def)
@@ -118,12 +122,14 @@ constrained_since t1 t2 A1 A2 s' s'"
 lemma dual_constrained_since_L7: 
 "dual_constrained_since_inv t1 t2 b t1_1 t2_1 A1 A2 s \<Longrightarrow>
  consecutive s s' \<Longrightarrow>
- (t1 > 0 \<or> A2 s' s') \<and>
- (A1 s' s' \<or>
-   b s \<and> always_imp s (A1 s) (A1 s') \<and> always_imp s (A2 s) (A2 s') \<and>t1_1 s < t1 \<and> t2 \<le> t2_1 s + 1)
+ t1 > t2 \<or> (t1 > 0 \<or> A2 s' s') \<and>
+ (A1 s' s' \<or> t2 = 0 \<or>
+   b s \<and> always_imp s (A1 s) (A1 s') \<and> always_imp s (A2 s) (A2 s') \<and> (t1_1 s = 0 \<or> t1_1 s < t1) \<and> t2 \<le> t2_1 s + 1)
  \<Longrightarrow>
 dual_constrained_since t1 t2 A1 A2 s' s'"
   unfolding dual_constrained_since_inv_def dual_constrained_since_def always_imp_def less_state.simps less_eq_state.simps
+  apply(erule disjE)
+   apply auto[1]
   apply(rule allI)
   subgoal for r1
     apply(cases "r1 = s'")
@@ -133,14 +139,16 @@ dual_constrained_since t1 t2 A1 A2 s' s'"
     apply(erule conjE)
      apply(rotate_tac -1)
     apply(erule disjE)
-    apply simp
+      apply simp
     using substate_refl apply blast
+     apply(rotate_tac -1)
+     apply(erule disjE)
+      apply (simp add: substate_toEnvNum_id)
      apply(erule impE)
       apply simp
-     apply(rotate_tac -1)
      apply(erule allE[of _ r1])
-    apply (smt (verit, best) add_le_cancel_right consecutive.simps le_iff_add le_trans less_inc_imp_less_eq substate_trans
-        toEnvNum3 trans_less_add1)
+    apply (smt (verit) add_le_cancel_right consecutive.simps le_eq_less_or_eq le_trans less_inc_imp_less_eq not_gr_zero
+        substate_trans toEnvNum3)
     apply simp
     using  substate_noteq_imp_substate_of_pred
     by (metis One_nat_def)
@@ -169,14 +177,14 @@ constrained_since0_inv t1 b t1_1 A1 A2 s'"
           order_subst1 substate_noteq_imp_substate_of_pred substate_trans toEnvNum3 verit_comp_simplify1(3))
     done
 
-lemma dual_constrained0_since_L6: 
-"dual_constrained_since0_inv t1 b t1_1 A1 A2 s \<Longrightarrow>
+lemma dual_constrained_since0_L6: 
+"dual_constrained_since0_inv t b t_1 A1 A2 s \<Longrightarrow>
  consecutive s s' \<Longrightarrow>
-b s' \<longrightarrow> A2 s' s' \<and>
- (A1 s' s' \<or>
-   b s \<and> always_imp s (A1 s) (A1 s') \<and> always_imp s (A2 s) (A2 s') \<and> t1_1 s' \<le> t1_1 s + 1)
+b s' \<longrightarrow>  A2 s' s' \<and>
+ (A1 s' s' \<or> t_1 s' = 0 \<or>
+   b s \<and> always_imp s (A1 s) (A1 s') \<and> always_imp s (A2 s) (A2 s')  \<and> t_1 s' \<le> t_1 s + 1)
  \<Longrightarrow>
-dual_constrained_since0_inv t1 b t1_1 A1 A2 s'"
+dual_constrained_since0_inv t b t_1 A1 A2 s'"
   unfolding dual_constrained_since0_inv_def always_imp_def less_state.simps less_eq_state.simps
   apply(rule impI)
   apply(rotate_tac 2)
@@ -191,14 +199,16 @@ dual_constrained_since0_inv t1 b t1_1 A1 A2 s'"
     apply(erule conjE)
      apply(rotate_tac -1)
     apply(erule disjE)
-    apply simp
+      apply simp
     using substate_refl apply blast
+     apply(rotate_tac -1)
+     apply(erule disjE)
+      apply (simp add: substate_toEnvNum_id)
      apply(erule impE)
       apply simp
-     apply(rotate_tac -1)
      apply(erule allE[of _ r1])
-    apply (smt (verit, best) add_le_cancel_right consecutive.simps le_iff_add le_trans less_inc_imp_less_eq substate_trans
-        toEnvNum3 trans_less_add1)
+    apply (smt (verit) add_le_cancel_right consecutive.simps le_eq_less_or_eq le_trans less_inc_imp_less_eq not_gr_zero
+        substate_trans toEnvNum3)
     apply simp
     using  substate_noteq_imp_substate_of_pred
     by (metis One_nat_def)
@@ -224,13 +234,13 @@ constrained_since0 t1 A1 A2 s' s'"
     done
 
 lemma dual_constrained_since0_L7: 
-"dual_constrained_since0_inv t1 b t1_1 A1 A2 s \<Longrightarrow>
+"dual_constrained_since0_inv t b t_1 A1 A2 s \<Longrightarrow>
  consecutive s s' \<Longrightarrow>
- A2 s' s' \<and>
- (A1 s' s' \<or>
-   b s \<and> always_imp s (A1 s) (A1 s') \<and> always_imp s (A2 s) (A2 s') \<and> t1 \<le> t1_1 s + 1)
+  A2 s' s' \<and>
+ (A1 s' s' \<or> t = 0 \<or>
+   b s \<and> always_imp s (A1 s) (A1 s') \<and> always_imp s (A2 s) (A2 s')  \<and> t \<le> t_1 s + 1)
  \<Longrightarrow>
-dual_constrained_since0 t1 A1 A2 s' s'"
+dual_constrained_since0 t A1 A2 s' s'"
   unfolding dual_constrained_since0_inv_def dual_constrained_since0_def always_imp_def less_state.simps less_eq_state.simps
   apply(rule allI)
   subgoal for r1
@@ -241,18 +251,21 @@ dual_constrained_since0 t1 A1 A2 s' s'"
     apply(erule conjE)
      apply(rotate_tac -1)
     apply(erule disjE)
-    apply simp
+      apply simp
     using substate_refl apply blast
+     apply(rotate_tac -1)
+     apply(erule disjE)
+      apply (simp add: substate_toEnvNum_id)
      apply(erule impE)
       apply simp
-     apply(rotate_tac -1)
      apply(erule allE[of _ r1])
-    apply (smt (verit, best) add_le_cancel_right consecutive.simps le_iff_add le_trans less_inc_imp_less_eq substate_trans
-        toEnvNum3 trans_less_add1)
+    apply (smt (verit) add_le_cancel_right consecutive.simps le_eq_less_or_eq le_trans less_inc_imp_less_eq not_gr_zero
+        substate_trans toEnvNum3)
     apply simp
     using  substate_noteq_imp_substate_of_pred
     by (metis One_nat_def)
   done
+
 
 lemma constrained_since_L4:
 "consecutive s s' \<Longrightarrow>

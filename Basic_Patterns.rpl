@@ -276,7 +276,7 @@ lemmas {
 		final state: s
 		premise b(s) --> (frm(t1(s) > 0) \/ A_2(s, s)) /\ 
 		(A_1(s, s) \/ frm(b(s0)) /\ alwaysimp(s0, A_1(s0), A_1(s)) /\
-			 alwaysimp(s0, A_2(s0), A_2(s)) /\ (frm(t1(s0) = 0) /\ A_2(s, s) \/ frm(t1(s0) < t1(s)))
+			 alwaysimp(s0, A_2(s0), A_2(s)) /\ (frm(t1(s0) = 0) \/ frm(t1(s0) < t1(s)))
 		)
 	};
 	LS7 lemma dual_since_L7 {
@@ -287,7 +287,7 @@ lemmas {
 		final state: s
 		premise (frm(t > 0) \/ A_2(s, s)) /\ 
 		(A_1(s, s) \/ frm(b(s0)) /\ alwaysimp(s0, A_1(s0), A_1(s)) /\
-			 alwaysimp(s0, A_2(s0), A_2(s)) /\ (frm(t1(s0) = 0) /\ A_2(s, s) \/ frm(t1(s0) < t))
+			 alwaysimp(s0, A_2(s0), A_2(s)) /\ (frm(t1(s0) = 0) \/ frm(t1(s0) < t))
 		)
 	};
 	LS4 lemma dual_since_L4 {
@@ -354,10 +354,10 @@ lemmas {
 		extra invariant formulas: A1', A2'
 		init state: s0
 		final state: s
-		premise b(s) --> (frm(t1_1(s) > 0) \/ A2'(s, s)) /\
-		(A1'(s, s) \/ 
+		premise b(s) --> frm(t1_1(s) > t2_1(s)) \/ (frm(t1_1(s) > 0) \/ A2'(s, s)) /\
+		(A1'(s, s) \/ frm(t2_1(s) = 0) \/
 			frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ 
-			frm(t1_1(s0) < t1_1(s) /\ t2_1(s) <= t2_1(s0) + 1)
+			frm((t1_1(s0) = 0 \/ t1_1(s0) < t1_1(s)) /\ t2_1(s) <= t2_1(s0) + 1)
 		)
 	};
 	LS7 lemma dual_constrained_since_L7 {
@@ -366,10 +366,10 @@ lemmas {
 		extra invariant formulas: A1', A2'
 		init state: s0
 		final state: s
-		premise (frm(t1 > 0) \/ A2'(s, s)) /\
-		(A1'(s, s) \/ 
+		premise frm(t1 > t2) \/ (frm(t1 > 0) \/ A2'(s, s)) /\
+		(A1'(s, s) \/ frm(t2 = 0) \/
 			frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ 
-			frm(t1_1(s0) < t1 /\ t2 <= t2_1(s0) + 1)
+			frm((t1_1(s0) = 0 \/ t1_1(s0) < t1) /\ t2 <= t2_1(s0) + 1)
 		)
 	};
 	LS4 lemma dual_constrained_since_L4 {
@@ -429,22 +429,28 @@ pastreq pattern dual_constrained_since0(const: t formulas: A1, A2) with dual_con
 pasteinv pattern dual_constrained_since0_inv(const: t fun: b, t1 formulas: A1, A2)
 lemmas {
 	LS6 lemma dual_constrained_since0_L6 {
-		const: t
-		fun: b, t1
+		const: t1
+		fun: b, t_1
 		extra invariant formulas: A1', A2'
 		init state: s0
 		final state: s
-		premise b(s) --> A2'(s, s) /\ 
-		(A1'(s, s) \/ frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ frm(t1(s) <= t1(s0) + 1))
+		premise b(s) --> A2'(s, s) /\
+		(A1'(s, s) \/ frm(t_1(s) = 0) \/
+			frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ 
+			frm(t_1(s) <= t_1(s0) + 1)
+		)
 	};
 	LS7 lemma dual_constrained_since0_L7 {
 		const: t
-		fun: b, t1
+		fun: b, t_1
 		extra invariant formulas: A1', A2'
 		init state: s0
 		final state: s
-		premise A2'(s, s) /\ 
-		(A1'(s, s) \/ frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ frm(t <= t1(s0) + 1))
+		premise A2'(s, s) /\
+		(A1'(s, s) \/ frm(t = 0) \/
+			frm(b(s0)) /\ alwaysimp(s0, A1'(s0), A1'(s)) /\ alwaysimp(s0, A2'(s0), A2'(s)) /\ 
+			frm(t <= t_1(s0) + 1)
+		)
 	};
 	LS4 lemma dual_constrained_since0_L4 {
 		const: t
